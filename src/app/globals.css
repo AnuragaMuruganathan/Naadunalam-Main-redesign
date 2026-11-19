@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/* ---------- Design tokens (sampled from the reference homepage) ---------- */
+@theme {
+  --color-forest-950: #072b12;
+  --color-forest-900: #0a3919;
+  --color-forest-800: #0f4819;
+  --color-forest-700: #155826;
+  --color-forest-600: #1d6933;
+  --color-forest-500: #2a7a40;
+  --color-leaf: #4f8a2a;
+  --color-cream: #fcf5ed;
+  --color-ivory: #fdf8f1;
+  --color-paper: #f8f9f6;
+  --color-sage: #f1efdc;
+  --color-sand: #e9dcc6;
+  --color-gold: #b8863b;
+  --color-gold-soft: #d9b26a;
+  --color-ink: #1c2a1f;
+  --color-muted: #4b544c;
+
+  --font-serif: var(--font-lora), "Lora", Georgia, serif;
+  --font-sans: var(--font-nunito), "Nunito Sans", system-ui, sans-serif;
+  --font-tamil: var(--font-tamil-serif), "Noto Serif Tamil", serif;
+  --font-tamil-sans: var(--font-tamil-sans), "Noto Sans Tamil", sans-serif;
+
+  --ease-organic: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/*
+ * Screens big enough for the pinned, scroll-driven Heritage Journey.
+ * Everywhere else the two acts stack and play once.
+ */
+@custom-variant cine (@media (min-width: 1024px) and (min-height: 600px) and (min-aspect-ratio: 16/10) and (prefers-reduced-motion: no-preference));
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-forest-600);
+  color: var(--color-cream);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Arch silhouette used by the Panchabhootham cards */
+.arch {
+  border-radius: 999px 999px 18px 18px;
+}
+
+/* Subtle paper grain over cream sections */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.45 0 0 0 0 0.3 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

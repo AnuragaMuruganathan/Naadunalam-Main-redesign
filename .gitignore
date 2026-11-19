@@ -1,0 +1,19 @@
+node_modules
+.next
+out
+next-env.d.ts
+*.tsbuildinfo
+.env*
+
+# Image sources (~60 MB). Never served; public/images is generated from them
+# by `npm run images`. Keep a backup of these folders outside git.
+/site asset/
+/site reference/
+/logo/
+/assets/originals/
+
+# QA output and logs
+qa/
+qa-live/
+*.log
+.vercel
