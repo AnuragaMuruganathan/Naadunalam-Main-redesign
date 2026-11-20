@@ -81,6 +81,7 @@ export const FOOTER_LINKS = {
   ],
   Shop: [
     ["All Products", "/shop"],
+    ["Our Vendors", "/store"],
     ["Traditional Rice", "/shop?category=rice-grains"],
     ["Millets", "/shop?category=siruthaniyam"],
     ["Ghee & Oil", "/shop?category=oil-vinegers"],

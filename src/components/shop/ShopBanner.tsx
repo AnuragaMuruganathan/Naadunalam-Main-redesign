@@ -9,8 +9,21 @@ import { getImageProps } from "next/image";
  * The CSS fallbacks approximate that until the measurement runs.
  *
  * Phones get a smaller crop of the kitchen side (see scripts/optimize-images.mjs).
+ *
+ * The vendor store pages reuse it with a Tamil line under the title (`sub`)
+ * and the store's facts card on the right (`aside`).
  */
-export default function ShopBanner({ title }: { title: string }) {
+export default function ShopBanner({
+  title,
+  id = "shop-title",
+  sub,
+  aside,
+}: {
+  title: string;
+  id?: string;
+  sub?: React.ReactNode;
+  aside?: React.ReactNode;
+}) {
   const common = { alt: "", sizes: "100vw", fetchPriority: "high", loading: "eager" } as const;
   // images.unoptimized is on, so each call yields a plain src (no srcSet): one file per breakpoint.
   const desktop = getImageProps({ ...common, src: "/images/shop-banner.webp", width: 2172, height: 724 }).props;
@@ -22,7 +35,7 @@ export default function ShopBanner({ title }: { title: string }) {
   }).props;
 
   return (
-    <section aria-labelledby="shop-title" className="relative isolate overflow-hidden bg-sand">
+    <section aria-labelledby={id} className="relative isolate overflow-hidden bg-sand">
       <picture>
         <source media="(min-width: 768px)" srcSet={desktop.srcSet ?? desktop.src} />
         <img
@@ -38,12 +51,18 @@ export default function ShopBanner({ title }: { title: string }) {
       />
 
       <div className="mx-auto flex h-[var(--shop-banner-h,170px)] max-w-[1480px] flex-col justify-center px-4 sm:px-5 md:h-[var(--shop-banner-h,clamp(190px,15vw,250px))] md:px-7 xl:h-[var(--shop-banner-h,max(180px,calc(100svh_-_104px_-_76px_-_32px_-_20px_-_((min(100vw,1480px)_-_128px)/6_-_12px)*0.9375_-_190px)))]">
-        <h1
-          id="shop-title"
-          className="font-serif text-[2.025rem] font-bold leading-[1.05] tracking-[-0.01em] text-forest-700 md:text-[clamp(2.475rem,4vw,3.475rem)]"
-        >
-          {title}
-        </h1>
+        <div className="flex items-center justify-between gap-6">
+          <div className="min-w-0">
+            <h1
+              id={id}
+              className="font-serif text-[2.025rem] font-bold leading-[1.05] tracking-[-0.01em] text-forest-700 md:text-[clamp(2.475rem,4vw,3.475rem)]"
+            >
+              {title}
+            </h1>
+            {sub}
+          </div>
+          {aside}
+        </div>
       </div>
     </section>
   );

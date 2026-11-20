@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import {
+  ArrowRight,
   Check,
   ChefHat,
   ChevronLeft,
@@ -34,6 +35,9 @@ import { rupees } from "@/lib/format";
 import { addToCart, maxQty, setQty as setCartQty, useShop } from "@/lib/store";
 import QtyStepper from "@/components/shop/QtyStepper";
 import { WishButton } from "@/components/shop/ProductCard";
+import VendorAvatar, { monthYear } from "@/components/shop/VendorAvatar";
+import { PRODUCTS } from "@/lib/catalog";
+import { PRODUCT_VENDOR, vendorOf } from "@/lib/vendors";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const rise = (delay = 0) => ({
@@ -291,6 +295,7 @@ function BuyBox({ product: p }: { product: Product }) {
           {p.ta}
         </motion.p>
       )}
+      <SoldBy product={p} />
 
       <motion.div {...rise(0.14)} className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 lg:mt-[clamp(0.75rem,2.4svh,1.5rem)]">
         <p className="text-[2.275rem] font-bold leading-none tracking-[-0.01em] text-forest-700 md:text-[2.575rem]">
@@ -503,6 +508,7 @@ function Details({ product: p, detail: d }: { product: Product; detail?: Product
     ["Net weight", p.weight],
     ["Pack size", d?.dims ?? ""],
     ["SKU", p.sku],
+    ["Vendor", vendorOf(p.slug).name],
     ["Availability", p.inStock ? (p.stock ? `${p.stock} in stock` : "In stock") : "Out of stock"],
     ["Delivery", "Flat ₹50 per order"],
   ];
@@ -563,7 +569,8 @@ function Details({ product: p, detail: d }: { product: Product; detail?: Product
         </div>
 
         <aside aria-labelledby="pd-specs" className="lg:pt-2">
-          <div className="rounded-3xl bg-white p-6 shadow-[0_18px_40px_-30px_rgba(60,40,10,0.5)] ring-1 ring-forest-600/10 md:p-7 lg:sticky lg:top-[92px]">
+          <div className="space-y-5 lg:sticky lg:top-[92px]">
+          <div className="rounded-3xl bg-white p-6 shadow-[0_18px_40px_-30px_rgba(60,40,10,0.5)] ring-1 ring-forest-600/10 md:p-7">
             <h2 id="pd-specs" className="font-serif text-[1.225rem] font-bold text-forest-700">
               Product details
             </h2>
@@ -578,7 +585,73 @@ function Details({ product: p, detail: d }: { product: Product; detail?: Product
                 ))}
             </dl>
           </div>
+          <VendorCard product={p} />
+          </div>
         </aside>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------------------------------------------------------- Vendor */
+
+/** One line under the name: who sells it, with a way into their store. */
+function SoldBy({ product: p }: { product: Product }) {
+  const v = vendorOf(p.slug);
+  return (
+    <motion.p {...rise(0.12)} className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.9rem] text-muted">
+      Sold by
+      <Link href={`/store/${v.slug}`} className="inline-flex items-center gap-1.5 font-semibold text-forest-700 hover:text-forest-500">
+        <VendorAvatar vendor={v} size="xs" />
+        {v.name}
+      </Link>
+      <span aria-hidden>·</span>
+      <Link
+        href={`/store/${v.slug}`}
+        className="group inline-flex items-center gap-1 font-semibold text-forest-700 underline decoration-gold-soft underline-offset-4 hover:text-forest-500"
+      >
+        Visit store
+        <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+      </Link>
+    </motion.p>
+  );
+}
+
+/** Vendor information, as in the original product page's "Vendor Info" tab. */
+function VendorCard({ product: p }: { product: Product }) {
+  const v = vendorOf(p.slug);
+  const count = PRODUCTS.filter((x) => PRODUCT_VENDOR[x.slug] === v.slug).length;
+  return (
+    <section aria-labelledby="pd-vendor" className="rounded-3xl bg-white p-6 shadow-[0_18px_40px_-30px_rgba(60,40,10,0.5)] ring-1 ring-forest-600/10 md:p-7">
+      <h2 id="pd-vendor" className="font-serif text-[1.225rem] font-bold text-forest-700">
+        Sold by
+      </h2>
+      <div className="mt-4 flex items-center gap-4">
+        <VendorAvatar vendor={v} size="md" />
+        <div className="min-w-0">
+          <p className="text-[1.1rem] font-bold leading-tight text-ink">{v.name}</p>
+          <p lang="ta" className="text-[0.95rem] text-forest-800">
+            {v.ta}
+          </p>
+          <p className="mt-0.5 text-[0.84rem] text-muted">
+            {count} products · Since {monthYear(v.since)}
+          </p>
+        </div>
+      </div>
+      <div className="mt-5 flex flex-wrap items-center gap-3">
+        <Link
+          href={`/store/${v.slug}`}
+          className="group inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full bg-forest-700 px-6 font-semibold text-white transition-colors hover:bg-forest-800"
+        >
+          Visit store
+          <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
+        </Link>
+        <a
+          href={`tel:${v.tel}`}
+          className="inline-flex min-h-12 items-center justify-center rounded-full border-[1.5px] border-forest-600/30 px-5 text-[0.9rem] font-semibold text-forest-800 transition-colors hover:border-forest-600"
+        >
+          Call {v.phone}
+        </a>
       </div>
     </section>
   );

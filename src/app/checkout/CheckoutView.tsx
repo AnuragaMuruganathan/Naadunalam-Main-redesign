@@ -30,6 +30,7 @@ import { rupees } from "@/lib/format";
 import { cartSummary, clearCart, getProduct, useShop } from "@/lib/store";
 import { STATES, submitOrder, validate, type Billing, type Field, type PlacedOrder } from "@/lib/order";
 import { STORE } from "@/lib/content";
+import { vendorOf } from "@/lib/vendors";
 
 const EMPTY: Billing = {
   email: "",
@@ -118,7 +119,7 @@ export default function CheckoutView() {
   const io = { form, errors, set, blur };
 
   return (
-    <PageStage id="co-title" title="Checkout">
+    <PageStage id="co-title" title="Checkout" compact aside={<Steps />}>
       {!hydrated ? (
         <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-8" aria-hidden>
           <div className="h-[560px] animate-pulse rounded-[1.6rem] bg-sand/60" />
@@ -136,13 +137,9 @@ export default function CheckoutView() {
           </Link>
         </div>
       ) : (
-        <form onSubmit={submit} noValidate className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-8">
-          {/* Progress, centred over the form column */}
-          <div className="flex justify-center lg:col-start-1 lg:row-start-1">
-            <Steps />
-          </div>
-
-          <div className="space-y-5 lg:col-start-1 lg:row-start-2">
+        <form onSubmit={submit} noValidate className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-6">
+          {/* Progress sits beside the title (PageStage aside), so the whole form fits one screen */}
+          <div className="space-y-2.5 lg:col-start-1 lg:row-start-1">
             {showSummary && errorList.length > 0 && (
               <div
                 ref={errorBox}
@@ -168,20 +165,21 @@ export default function CheckoutView() {
             )}
 
             <Card title="Contact Details" n={1} decor={<Sprig className="h-[52px] w-[60px]" />}>
-              <div className="grid gap-x-6 gap-y-4 sm:grid-cols-2">
+              <div className="grid gap-x-5 gap-y-3 sm:grid-cols-2">
                 <Input k="email" icon={Mail} type="email" autoComplete="email" inputMode="email" placeholder="Enter your email" hint="For order updates and delivery notifications" {...io} />
                 <Input k="phone" icon={Phone} type="tel" autoComplete="tel" inputMode="tel" placeholder="Enter your phone number" {...io} />
               </div>
             </Card>
 
             <Card title="Delivery Address" n={2} decor={<VillageSketch className="h-[54px] w-[170px]" />}>
-              <div className="grid gap-x-6 gap-y-4 sm:grid-cols-2">
-                <Input k="firstName" icon={User} autoComplete="given-name" placeholder="Enter first name" {...io} />
-                <Input k="lastName" icon={User} autoComplete="family-name" placeholder="Enter last name" {...io} />
-                <Input k="address1" icon={MapPin} autoComplete="street-address" placeholder="House no., Street, Area" className="sm:col-span-2" {...io} />
-                <Input k="city" icon={Building2} autoComplete="address-level2" placeholder="Enter city or town" {...io} />
-                <Input k="postcode" icon={MapPin} autoComplete="postal-code" inputMode="numeric" maxLength={7} placeholder="Enter pincode" {...io} />
-                <SelectField id="co-state" icon={MapIcon} label="State" error={errors.state}>
+              {/* Desktop: three rows (name + pincode, street + city, state + country) */}
+              <div className="grid gap-x-5 gap-y-3 sm:grid-cols-2 lg:grid-cols-6">
+                <Input k="firstName" icon={User} autoComplete="given-name" placeholder="Enter first name" className="lg:col-span-2" {...io} />
+                <Input k="lastName" icon={User} autoComplete="family-name" placeholder="Enter last name" className="lg:col-span-2" {...io} />
+                <Input k="postcode" icon={MapPin} autoComplete="postal-code" inputMode="numeric" maxLength={7} placeholder="Enter pincode" className="max-lg:order-1 lg:col-span-2" {...io} />
+                <Input k="address1" icon={MapPin} autoComplete="street-address" placeholder="House no., Street, Area" className="sm:col-span-2 lg:col-span-4" {...io} />
+                <Input k="city" icon={Building2} autoComplete="address-level2" placeholder="Enter city or town" className="lg:col-span-2" {...io} />
+                <SelectField id="co-state" icon={MapIcon} label="State" error={errors.state} className="max-lg:order-2 lg:col-span-3">
                   <select
                     id="co-state"
                     autoComplete="address-level1"
@@ -198,7 +196,7 @@ export default function CheckoutView() {
                     ))}
                   </select>
                 </SelectField>
-                <SelectField id="co-country" icon={Globe} label="Country / Region">
+                <SelectField id="co-country" icon={Globe} label="Country / Region" className="max-lg:order-2 lg:col-span-3">
                   <select id="co-country" autoComplete="country-name" defaultValue="India" className={`${field(false)} cursor-pointer appearance-none pr-11`}>
                     <option>India</option>
                   </select>
@@ -209,14 +207,14 @@ export default function CheckoutView() {
             <Card title="Order Notes" n={3} optional>
               <label htmlFor="co-notes" className="sr-only">Order notes</label>
               <div className="relative">
-                <NotebookPen className="pointer-events-none absolute left-4 top-3.5 size-[18px] text-forest-600/70" aria-hidden />
+                <NotebookPen className="pointer-events-none absolute left-4 top-[11px] size-[18px] text-forest-600/70" aria-hidden />
                 <textarea
                   id="co-notes"
-                  rows={2}
+                  rows={1}
                   value={form.notes}
                   onChange={(e) => set("notes", e.target.value)}
                   placeholder="Notes about your order, e.g. special notes for delivery."
-                  className={`${field(false)} min-h-[4.5rem] py-3 pl-11`}
+                  className={`${field(false)} min-h-10 py-2 pl-11`}
                 />
               </div>
             </Card>
@@ -227,17 +225,18 @@ export default function CheckoutView() {
             "Place order" is always on screen; the item list scrolls inside.
             Too-short screens don't pin.
           */}
-          <aside aria-labelledby="your-order" className="lg:col-start-2 lg:row-start-2 lg:top-[120px] [@media(min-height:700px)]:lg:sticky">
-            <div className="relative overflow-hidden rounded-[1.6rem] bg-white/95 p-5 shadow-[0_24px_50px_-30px_rgba(60,40,10,0.55)] ring-1 ring-forest-600/8 md:p-6 lg:flex lg:max-h-[calc(100svh-140px)] lg:flex-col">
+          <aside aria-labelledby="your-order" className="lg:col-start-2 lg:row-start-1 lg:top-[120px] [@media(min-height:700px)]:lg:sticky">
+            <div className="relative overflow-hidden rounded-[1.4rem] bg-white/95 p-5 shadow-[0_24px_50px_-30px_rgba(60,40,10,0.55)] ring-1 ring-forest-600/8 lg:flex lg:max-h-[calc(100svh-192px)] lg:flex-col">
               <div className="flex shrink-0 items-center justify-between gap-3">
-                <h2 id="your-order" className="text-[1.35rem] font-bold text-forest-800">Your Order</h2>
-                <Link href="/cart" className="inline-flex min-h-10 items-center gap-1.5 rounded-full px-2 text-[0.9rem] font-semibold text-forest-700 transition-colors hover:bg-forest-600/8">
+                <h2 id="your-order" className="text-[1.2rem] font-bold text-forest-800">Your Order</h2>
+                <Link href="/cart" className="inline-flex min-h-9 items-center gap-1.5 rounded-full px-2 text-[0.9rem] font-semibold text-forest-700 transition-colors hover:bg-forest-600/8">
                   <Pencil className="size-4" aria-hidden />
                   Edit cart
                 </Link>
               </div>
 
-              <ul data-lenis-prevent className="mt-3 min-h-16 space-y-3 overflow-y-auto pr-1 lg:max-h-[260px]">
+              {/* pt-2 / pr-2: room inside the scroll box for the quantity badge that overhangs each photo's corner */}
+              <ul data-lenis-prevent className="mt-1 min-h-16 space-y-2.5 overflow-y-auto pr-2 pt-2 lg:max-h-[260px]">
                 {summary.lines.map(({ id, qty, product: p }) => (
                   <li key={id} className="flex items-center gap-3.5">
                     <span className="relative shrink-0">
@@ -252,7 +251,7 @@ export default function CheckoutView() {
                       <span className="block truncate text-[0.98rem] font-bold text-ink">{p.name}</span>
                       <span className="block truncate text-[0.8rem] text-muted">
                         {p.pack}
-                        {qty > 1 && ` × ${qty}`} <span aria-hidden>•</span> Vendor: Naadu Nalam
+                        {qty > 1 && ` × ${qty}`} <span aria-hidden>•</span> Vendor: {vendorOf(p.slug).name}
                       </span>
                     </span>
                     <span className="text-[0.98rem] font-bold tabular-nums text-ink">{rupees(p.price * qty)}</span>
@@ -260,7 +259,7 @@ export default function CheckoutView() {
                 ))}
               </ul>
 
-              <dl className="mt-4 shrink-0 space-y-2.5 border-t border-forest-600/10 pt-4 text-[0.95rem]">
+              <dl className="mt-3 shrink-0 space-y-2 border-t border-forest-600/10 pt-3 text-[0.95rem]">
                 <div className="flex justify-between gap-4">
                   <dt className="text-ink/85">Subtotal ({summary.items} {summary.items === 1 ? "item" : "items"})</dt>
                   <dd className="font-bold tabular-nums text-ink">{rupees(summary.subtotal)}</dd>
@@ -272,18 +271,18 @@ export default function CheckoutView() {
                   </dt>
                   <dd className="font-bold tabular-nums text-ink">{summary.shipping ? rupees(summary.shipping) : "—"}</dd>
                 </div>
-                <div className="relative flex items-center justify-between gap-4 overflow-hidden rounded-xl bg-[#e9f2da] px-3.5 py-2.5 ring-1 ring-leaf/20">
+                <div className="relative flex items-center justify-between gap-4 overflow-hidden rounded-xl bg-[#e9f2da] px-3.5 py-2 ring-1 ring-leaf/20">
                   <span aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 -translate-y-1/2 opacity-25">
                     <Sprig className="h-[46px] w-[54px]" />
                   </span>
-                  <dt className="relative text-[1.35rem] font-bold text-forest-900">Total</dt>
-                  <dd className="relative text-[1.75rem] font-bold leading-none tabular-nums text-forest-900">{rupees(summary.total)}</dd>
+                  <dt className="relative text-[1.2rem] font-bold text-forest-900">Total</dt>
+                  <dd className="relative text-[1.55rem] font-bold leading-none tabular-nums text-forest-900">{rupees(summary.total)}</dd>
                 </div>
               </dl>
 
-              <fieldset className="mt-5 shrink-0">
-                <legend className="mb-2.5 text-[1.2rem] font-bold text-forest-800">Payment Method</legend>
-                <label className="flex cursor-pointer items-center gap-3.5 rounded-2xl border-[1.5px] border-forest-600 bg-[#f1f7e8] px-4 py-3 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-gold">
+              <fieldset className="mt-3 shrink-0">
+                <legend className="mb-1.5 text-[1.05rem] font-bold text-forest-800">Payment Method</legend>
+                <label className="flex cursor-pointer items-center gap-3.5 rounded-2xl border-[1.5px] border-forest-600 bg-[#f1f7e8] px-4 py-2.5 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-gold">
                   <input type="radio" name="payment" value="cod" defaultChecked className="peer sr-only" />
                   <span aria-hidden className="grid size-5 shrink-0 place-items-center rounded-full border-2 border-forest-700">
                     <span className="size-2.5 rounded-full bg-forest-700" />
@@ -300,7 +299,7 @@ export default function CheckoutView() {
                 type="submit"
                 disabled={busy}
                 whileTap={{ scale: 0.98 }}
-                className="mt-5 inline-flex min-h-[3.25rem] w-full shrink-0 cursor-pointer items-center justify-center gap-2.5 rounded-full bg-forest-700 px-6 text-[1.08rem] font-bold text-white shadow-[0_14px_26px_-14px_rgba(10,57,25,0.8)] transition-colors hover:bg-forest-800 disabled:cursor-wait disabled:opacity-80"
+                className="mt-3.5 inline-flex min-h-12 w-full shrink-0 cursor-pointer items-center justify-center gap-2.5 rounded-full bg-forest-700 px-6 text-[1.08rem] font-bold text-white shadow-[0_14px_26px_-14px_rgba(10,57,25,0.8)] transition-colors hover:bg-forest-800 disabled:cursor-wait disabled:opacity-80"
               >
                 {busy ? (
                   <>
@@ -313,7 +312,7 @@ export default function CheckoutView() {
                 )}
               </motion.button>
 
-              <p className="mt-3 shrink-0 text-center text-[0.72rem] leading-snug text-muted">
+              <p className="mt-2 shrink-0 text-center text-[0.72rem] leading-snug text-muted">
                 Your details are used only to process and deliver this order.
               </p>
             </div>
@@ -327,13 +326,13 @@ export default function CheckoutView() {
 /* ---------------------------------------------------------------- Form pieces */
 
 const field = (err: boolean) =>
-  `block min-h-11 w-full rounded-xl border bg-white px-4 text-[0.98rem] text-ink outline-none transition-[border-color,box-shadow] placeholder:text-muted/70 focus:border-forest-600 focus:ring-4 focus:ring-forest-600/12 ${
+  `block min-h-10 w-full rounded-xl border bg-white px-4 text-[0.95rem] text-ink outline-none transition-[border-color,box-shadow] placeholder:text-muted/70 focus:border-forest-600 focus:ring-4 focus:ring-forest-600/12 ${
     err ? "border-[#b3261e] ring-4 ring-[#b3261e]/10" : "border-forest-600/20"
   }`;
 
 function Label({ htmlFor, icon: Icon, children, optional }: { htmlFor: string; icon: LucideIcon; children: React.ReactNode; optional?: boolean }) {
   return (
-    <label htmlFor={htmlFor} className="mb-1.5 flex items-center gap-2 text-[0.9rem] font-semibold text-ink">
+    <label htmlFor={htmlFor} className="mb-1 flex items-center gap-2 text-[0.875rem] font-semibold text-ink">
       <Icon className="size-4 shrink-0 text-forest-700" strokeWidth={1.9} aria-hidden />
       <span>
         {children}{" "}
@@ -397,16 +396,16 @@ function Input({
         {...rest}
       />
       {hint && !err && (
-        <p id={`${id}-hint`} className="mt-1.5 text-[0.8rem] text-muted">{hint}</p>
+        <p id={`${id}-hint`} className="mt-1 text-[0.78rem] text-muted">{hint}</p>
       )}
       {err && <Err id={`${id}-err`}>{err}</Err>}
     </div>
   );
 }
 
-function SelectField({ id, icon, label, error, children }: { id: string; icon: LucideIcon; label: string; error?: string; children: React.ReactNode }) {
+function SelectField({ id, icon, label, error, className = "", children }: { id: string; icon: LucideIcon; label: string; error?: string; className?: string; children: React.ReactNode }) {
   return (
-    <div>
+    <div className={className}>
       <Label htmlFor={id} icon={icon}>{label}</Label>
       <div className="relative">
         {children}
@@ -431,14 +430,14 @@ function Card({
   children: React.ReactNode;
 }) {
   return (
-    <section className="relative rounded-[1.6rem] bg-white/92 p-5 shadow-[0_20px_44px_-30px_rgba(60,40,10,0.5)] ring-1 ring-forest-600/8 md:px-7 md:py-6">
+    <section className="relative rounded-[1.4rem] bg-white/92 p-4 shadow-[0_20px_44px_-30px_rgba(60,40,10,0.5)] ring-1 ring-forest-600/8 md:px-6 md:py-3.5">
       {decor && (
-        <span aria-hidden className="pointer-events-none absolute right-5 top-3 max-sm:hidden">
+        <span aria-hidden className="pointer-events-none absolute right-5 top-2 max-sm:hidden">
           {decor}
         </span>
       )}
-      <h2 className="relative mb-4 flex items-center gap-3 text-[1.3rem] font-bold text-forest-800">
-        <span className="grid size-8 shrink-0 place-items-center rounded-full bg-forest-700 text-[0.95rem] text-white">{n}</span>
+      <h2 className="relative mb-3 flex items-center gap-2.5 text-[1.15rem] font-bold text-forest-800">
+        <span className="grid size-7 shrink-0 place-items-center rounded-full bg-forest-700 text-[0.85rem] text-white">{n}</span>
         {title}
         {optional && <span className="text-[0.9rem] font-normal text-muted">(optional)</span>}
       </h2>

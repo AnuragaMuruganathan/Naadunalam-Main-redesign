@@ -146,7 +146,6 @@ export default function Footer() {
                         className="group relative inline-block py-[clamp(0.2rem,0.45svh,0.3rem)] whitespace-nowrap text-[0.793rem] leading-snug text-white/80 transition-colors hover:text-white max-[370px]:text-[0.726rem] sm:text-[0.917rem]"
                       >
                         {label}
-                        <span className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-gold-soft transition-transform duration-300 group-hover:scale-x-100" />
                       </Link>
                     </li>
                   ))}

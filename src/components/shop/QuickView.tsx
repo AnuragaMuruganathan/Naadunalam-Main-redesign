@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Check, ShoppingCart, X } from "lucide-react";
 import type { Product } from "@/lib/catalog";
 import { categoryOf } from "@/lib/shop";
+import { vendorOf } from "@/lib/vendors";
 import { rupees } from "@/lib/format";
 import { addToCart, maxQty, useShop } from "@/lib/store";
 import QtyStepper from "./QtyStepper";
@@ -148,6 +149,14 @@ function Dialog({ product: p, onClose }: { product: Product; onClose: () => void
                 <dd className="font-semibold text-ink">{p.sku}</dd>
               </div>
             )}
+            <div>
+              <dt className="text-muted">Sold by</dt>
+              <dd>
+                <Link href={`/store/${vendorOf(p.slug).slug}`} onClick={onClose} className="font-bold text-forest-700 underline decoration-gold-soft underline-offset-4 hover:text-forest-500">
+                  {vendorOf(p.slug).name}
+                </Link>
+              </dd>
+            </div>
             <div>
               <dt className="text-muted">Delivery</dt>
               <dd className="font-semibold text-ink">Flat ₹50 / order</dd>

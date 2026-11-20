@@ -10,6 +10,7 @@ export default function PageStage({
   ta,
   id,
   aside,
+  compact = false,
   children,
 }: {
   title: string;
@@ -18,6 +19,8 @@ export default function PageStage({
   id: string;
   /** Optional content at the right of the title row (desktop) */
   aside?: React.ReactNode;
+  /** Tighter top spacing and title, for pages that must fit one screen (checkout) */
+  compact?: boolean;
   children: React.ReactNode;
 }) {
   const common = { alt: "", sizes: "100vw", fetchPriority: "high", loading: "eager" } as const;
@@ -36,10 +39,10 @@ export default function PageStage({
         <span className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-b from-transparent to-cream" />
       </div>
 
-      <div className="mx-auto max-w-[1320px] px-4 pb-8 pt-5 md:px-8 md:pb-10 md:pt-7">
-        <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+      <div className={`mx-auto max-w-[1320px] px-4 md:px-8 ${compact ? "pb-6 pt-3 md:pb-6 md:pt-3" : "pb-8 pt-5 md:pb-10 md:pt-7"}`}>
+        <div className={`flex flex-wrap justify-between gap-x-6 gap-y-3 ${compact ? "items-center" : "items-end"}`}>
           <div>
-            <h1 id={id} className="text-[2.4rem] font-bold leading-none tracking-[-0.015em] text-forest-700 md:text-[3.2rem]">
+            <h1 id={id} className={`font-bold leading-none tracking-[-0.015em] text-forest-700 ${compact ? "text-[2.1rem] md:text-[2.5rem]" : "text-[2.4rem] md:text-[3.2rem]"}`}>
               {title}
             </h1>
             {ta && (
@@ -50,7 +53,7 @@ export default function PageStage({
           </div>
           {aside}
         </div>
-        <div className="mt-5 md:mt-7">{children}</div>
+        <div className={compact ? "mt-3" : "mt-5 md:mt-7"}>{children}</div>
       </div>
     </section>
   );
