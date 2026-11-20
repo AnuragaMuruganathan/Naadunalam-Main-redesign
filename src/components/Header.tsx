@@ -5,8 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
-import { ChevronDown, ChevronRight, Heart, Menu, Phone, Search, ShoppingCart, Truck, User, X } from "lucide-react";
+import { ArrowRight, ChevronDown, ChevronRight, Heart, LayoutGrid, Menu, Phone, Search, ShoppingCart, Truck, User, X } from "lucide-react";
 import BrandLockup from "./BrandLockup";
+import { Leaf } from "./Leaf";
+import CategoryPicker from "./CategoryPicker";
 import { NAV, OTHERS, STORE } from "@/lib/content";
 import { PRODUCTS, SHOP_CATEGORIES } from "@/lib/catalog";
 import { scrollToHash } from "@/lib/gsap";
@@ -272,7 +274,7 @@ export default function Header() {
                 <Heart className="size-[22px]" strokeWidth={1.8} />
                 <Badge n={wishCount} tone="gold" />
               </IconBtn>
-              <IconBtn label="Account" className="max-md:hidden">
+              <IconBtn label="My account" href="/account" className="max-md:hidden">
                 <User className="size-[22px]" strokeWidth={1.8} />
               </IconBtn>
               <IconBtn label={`Cart, ${cartCount} ${cartCount === 1 ? "item" : "items"}`} href="/cart">
@@ -309,7 +311,7 @@ export default function Header() {
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-x-0 top-full border-b border-forest-600/12 bg-paper shadow-[0_24px_40px_-28px_rgba(10,57,25,0.45)]"
               >
-                <div className="mx-auto max-w-[760px] px-4 py-4 md:px-8">
+                <div className="mx-auto max-w-[900px] px-4 py-5 md:px-10">
                   <ProductSearch
                     autoFocus
                     onDone={(href) => {
@@ -352,7 +354,7 @@ export default function Header() {
                 />
               </motion.div>
               <ul className="space-y-0.5">
-                {[...NAV, { label: "Your Cart", href: "/cart" } as const].map((item, i) => (
+                {[...NAV, { label: "Your Cart", href: "/cart" } as const, { label: "My Account", href: "/account" } as const].map((item, i) => (
                   <motion.li
                     key={item.label}
                     initial={{ opacity: 0, x: -24 }}
@@ -361,9 +363,9 @@ export default function Header() {
                   >
                     <Link
                       href={item.href}
-                      onClick={(e) => (item.label === "Your Cart" ? setMenuOpen(false) : go(e, item as NavItem))}
+                      onClick={(e) => (item.label === "Your Cart" || item.label === "My Account" ? setMenuOpen(false) : go(e, item as NavItem))}
                       className={`flex items-center gap-3 py-2 font-serif text-[1.818rem] font-semibold ${
-                        pageActive === item.label || (item.label === "Your Cart" && pathname === "/cart")
+                        pageActive === item.label || (item.label === "Your Cart" && pathname === "/cart") || (item.label === "My Account" && pathname === "/account")
                           ? "text-gold-soft"
                           : "text-white"
                       }`}
@@ -381,7 +383,7 @@ export default function Header() {
                 <motion.li
                   initial={{ opacity: 0, x: -24 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.15 + (NAV.length + 1) * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ delay: 0.15 + (NAV.length + 2) * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <button
                     type="button"
@@ -551,7 +553,11 @@ function OthersMenu() {
   );
 }
 
-/** Search box with live product suggestions; submits to /shop?q=… */
+/**
+ * Search bar: leafy pill with the query, an "All Categories" picker and a
+ * Search button. Live suggestions (matching categories first, then products)
+ * follow the picked category; submitting goes to /shop?q=…&category=…
+ */
 function ProductSearch({
   onDone,
   onEscape,
@@ -565,32 +571,52 @@ function ProductSearch({
 }) {
   const id = useId();
   const [q, setQ] = useState("");
+  const [cat, setCat] = useState("");
   const term = q.trim().toLowerCase();
+  const catHits = useMemo(
+    () =>
+      term.length < 2 || cat
+        ? []
+        : SHOP_CATEGORIES.filter((c) => `${c.name} ${c.ta}`.toLowerCase().includes(term)).slice(0, 2),
+    [term, cat]
+  );
   const hits = useMemo(
     () =>
       term.length < 2
         ? []
-        : PRODUCTS.filter((p) => `${p.name} ${p.ta}`.toLowerCase().includes(term)).slice(0, 5),
-    [term]
+        : PRODUCTS.filter(
+            (p) => (!cat || p.category === cat) && `${p.name} ${p.ta}`.toLowerCase().includes(term)
+          ).slice(0, 5),
+    [term, cat]
   );
   const dark = tone === "dark";
+  const shopHref = (query: string, category = cat) => {
+    const sp = new URLSearchParams();
+    if (query) sp.set("q", query);
+    if (category) sp.set("category", category);
+    const qs = sp.toString();
+    return qs ? `/shop?${qs}` : "/shop";
+  };
+  const row = `flex w-full cursor-pointer items-center gap-3 px-3 py-2 text-left transition-colors ${dark ? "hover:bg-white/10" : "hover:bg-cream"}`;
 
   return (
     <form
       role="search"
       onSubmit={(e) => {
         e.preventDefault();
-        onDone(term ? `/shop?q=${encodeURIComponent(q.trim())}` : "/shop");
+        onDone(shopHref(q.trim()));
       }}
       onKeyDown={(e) => e.key === "Escape" && onEscape?.()}
     >
       <label htmlFor={id} className="sr-only">Search products</label>
       <div
-        className={`flex items-center gap-2 rounded-full border px-4 ${
-          dark ? "border-white/25 bg-white/10 text-white" : "border-forest-600/20 bg-white text-ink"
+        className={`relative flex items-center rounded-full border py-1.5 pl-4 pr-1.5 sm:pl-5 ${
+          dark
+            ? "border-white/25 bg-white/10 text-white"
+            : "border-forest-700/70 bg-white text-ink shadow-[0_18px_36px_-24px_rgba(10,57,25,0.5)] transition-shadow focus-within:shadow-[0_0_0_4px_rgba(29,105,51,0.12),0_18px_36px_-24px_rgba(10,57,25,0.5)]"
         }`}
       >
-        <Search className={`size-5 shrink-0 ${dark ? "text-white/70" : "text-forest-600"}`} aria-hidden />
+        <Search className={`size-5 shrink-0 ${dark ? "text-white/70" : "text-forest-800"}`} strokeWidth={2} aria-hidden />
         <input
           id={id}
           type="search"
@@ -598,31 +624,68 @@ function ProductSearch({
           onChange={(e) => setQ(e.target.value)}
           autoFocus={autoFocus}
           autoComplete="off"
-          placeholder="Search rice, millets, oils… or அவல்"
-          className={`h-12 min-w-0 flex-1 bg-transparent text-base outline-none ${
-            dark ? "placeholder:text-white/55" : "placeholder:text-muted/70"
+          placeholder="Search for products, categories…"
+          className={`ml-3 h-11 min-w-0 flex-1 bg-transparent text-[1rem] outline-none! [&::-webkit-search-cancel-button]:appearance-none ${
+            dark ? "placeholder:text-white/55" : "placeholder:text-ink/55"
           }`}
         />
+        {q && (
+          <button
+            type="button"
+            onClick={() => setQ("")}
+            aria-label="Clear search"
+            className={`grid size-8 shrink-0 cursor-pointer place-items-center rounded-full transition-colors ${
+              dark ? "text-white/70 hover:bg-white/10" : "text-forest-700/70 hover:bg-cream hover:text-forest-800"
+            }`}
+          >
+            <X className="size-4" strokeWidth={2.2} aria-hidden />
+          </button>
+        )}
+
+        {/* Category picker */}
+        <span aria-hidden className={`mx-2 h-8 w-px shrink-0 max-sm:hidden ${dark ? "bg-white/20" : "bg-forest-600/20"}`} />
+        <div className="max-sm:hidden">
+          <CategoryPicker value={cat} onChange={setCat} dark={dark} />
+        </div>
+
+        {/* Faint leaves beside the button */}
+        {!dark && (
+          <span aria-hidden className="pointer-events-none relative mx-1 h-11 w-12 shrink-0 opacity-25 max-md:hidden">
+            <Leaf className="absolute bottom-0 left-0 h-[22px] w-[30px] -rotate-[70deg] grayscale-[35%]" />
+            <Leaf className="absolute bottom-1 left-4 h-[20px] w-[26px] -rotate-[25deg] grayscale-[35%]" />
+          </span>
+        )}
+
         <button
           type="submit"
-          className={`shrink-0 cursor-pointer rounded-full px-4 py-1.5 text-sm font-bold transition-colors ${
+          className={`group inline-flex h-11 shrink-0 cursor-pointer items-center gap-2 rounded-full px-5 text-[0.98rem] font-bold transition-colors sm:px-7 ${
             dark ? "bg-gold-soft text-forest-950 hover:bg-white" : "bg-forest-600 text-white hover:bg-forest-700"
           }`}
         >
           Search
+          <ArrowRight className="size-[18px] transition-transform group-hover:translate-x-0.5" aria-hidden />
         </button>
       </div>
-      {hits.length > 0 && (
+
+      {(catHits.length > 0 || hits.length > 0) && (
         <ul className={`mt-3 divide-y overflow-hidden rounded-2xl ${dark ? "divide-white/10 bg-white/5" : "divide-forest-600/8 bg-white ring-1 ring-forest-600/10"}`}>
+          {catHits.map((c) => (
+            <li key={c.slug}>
+              <button type="button" onClick={() => onDone(shopHref("", c.slug))} className={row}>
+                <span className={`grid size-10 shrink-0 place-items-center rounded-lg ${dark ? "bg-white/10 text-white" : "bg-leaf/12 text-forest-700"}`}>
+                  <LayoutGrid className="size-5" strokeWidth={1.8} aria-hidden />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className={`block truncate text-sm font-bold ${dark ? "text-white" : "text-ink"}`}>{c.name}</span>
+                  <span className={`block text-xs ${dark ? "text-white/65" : "text-muted"}`}>Category · {c.count} products</span>
+                </span>
+                <ArrowRight className={`size-4 shrink-0 ${dark ? "text-gold-soft" : "text-forest-600"}`} aria-hidden />
+              </button>
+            </li>
+          ))}
           {hits.map((p) => (
             <li key={p.id}>
-              <button
-                type="button"
-                onClick={() => onDone(`/shop?q=${encodeURIComponent(p.name)}`)}
-                className={`flex w-full cursor-pointer items-center gap-3 px-3 py-2 text-left transition-colors ${
-                  dark ? "hover:bg-white/10" : "hover:bg-cream"
-                }`}
-              >
+              <button type="button" onClick={() => onDone(`/shop/${p.slug}`)} className={row}>
                 <span className="relative size-10 shrink-0 overflow-hidden rounded-lg bg-sand">
                   <Image src={p.img} alt="" fill sizes="40px" className="object-cover" />
                 </span>

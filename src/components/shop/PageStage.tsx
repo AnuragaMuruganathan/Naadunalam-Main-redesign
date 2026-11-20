@@ -11,6 +11,7 @@ export default function PageStage({
   id,
   aside,
   compact = false,
+  fill = false,
   children,
 }: {
   title: string;
@@ -21,6 +22,8 @@ export default function PageStage({
   aside?: React.ReactNode;
   /** Tighter top spacing and title, for pages that must fit one screen (checkout) */
   compact?: boolean;
+  /** Fill the screen below the header (footer starts just out of view); content centred in the spare height */
+  fill?: boolean;
   children: React.ReactNode;
 }) {
   const common = { alt: "", sizes: "100vw", fetchPriority: "high", loading: "eager" } as const;
@@ -29,7 +32,10 @@ export default function PageStage({
   const { srcSet: _unused, ...img } = getImageProps({ ...common, src: "/images/shop-banner-m.webp", width: 976, height: 480 }).props;
 
   return (
-    <section aria-labelledby={id} className="relative isolate overflow-x-clip">
+    <section
+      aria-labelledby={id}
+      className={`relative isolate overflow-x-clip ${fill ? "flex min-h-[calc(100svh-96px)] flex-col md:min-h-[calc(100svh-104px)]" : ""}`}
+    >
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[300px] md:h-[380px]">
         <picture>
           <source media="(min-width: 768px)" srcSet={desktop.srcSet ?? desktop.src} />
@@ -39,7 +45,11 @@ export default function PageStage({
         <span className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-b from-transparent to-cream" />
       </div>
 
-      <div className={`mx-auto max-w-[1320px] px-4 md:px-8 ${compact ? "pb-6 pt-3 md:pb-6 md:pt-3" : "pb-8 pt-5 md:pb-10 md:pt-7"}`}>
+      <div
+        className={`mx-auto w-full max-w-[1320px] px-4 md:px-8 ${compact ? "pb-6 pt-3 md:pb-6 md:pt-3" : "pb-8 pt-5 md:pb-10 md:pt-7"} ${
+          fill ? "flex flex-1 flex-col" : ""
+        }`}
+      >
         <div className={`flex flex-wrap justify-between gap-x-6 gap-y-3 ${compact ? "items-center" : "items-end"}`}>
           <div>
             <h1 id={id} className={`font-bold leading-none tracking-[-0.015em] text-forest-700 ${compact ? "text-[2.1rem] md:text-[2.5rem]" : "text-[2.4rem] md:text-[3.2rem]"}`}>
@@ -53,7 +63,7 @@ export default function PageStage({
           </div>
           {aside}
         </div>
-        <div className={compact ? "mt-3" : "mt-5 md:mt-7"}>{children}</div>
+        <div className={`${compact ? "mt-3" : "mt-5 md:mt-7"} ${fill ? "flex flex-1 flex-col justify-center" : ""}`}>{children}</div>
       </div>
     </section>
   );
