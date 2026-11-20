@@ -4,7 +4,7 @@ import ShopByCategory from "@/components/ShopByCategory";
 
 export default function Home() {
   return (
-    <main id="main" className="pt-[112px] md:pt-[122px]">
+    <main id="main" className="pt-[96px] md:pt-[104px]">
       <Hero />
       <HeritageJourney />
       <ShopByCategory />

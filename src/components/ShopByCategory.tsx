@@ -54,19 +54,19 @@ export default function ShopByCategory() {
       ref={root}
       id="shop"
       aria-labelledby="sc-title"
-      className="grain flex h-[calc(100svh-76px)] min-h-[540px] bg-ivory py-[clamp(1.25rem,4svh,2.5rem)] md:h-[calc(100svh-86px)]"
+      className="grain flex h-[calc(100svh-64px)] min-h-[540px] bg-ivory py-[clamp(1.25rem,4svh,2.5rem)] md:h-[calc(100svh-72px)]"
     >
       <div className="mx-auto flex w-full max-w-[1480px] flex-col px-5 md:px-8">
         <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-5">
           <span className="sc-rule hidden min-[400px]:block"><LeafRule /></span>
           <span className="overflow-hidden">
-            <h2 id="sc-title" className="sc-title whitespace-nowrap font-serif text-[1.65rem] font-bold leading-tight text-forest-600 min-[400px]:text-[1.85rem] md:text-[2.75rem]">
+            <h2 id="sc-title" className="sc-title whitespace-nowrap font-serif text-[1.607rem] font-bold leading-tight text-forest-600 min-[400px]:text-[1.818rem] md:text-[2.763rem]">
               Shop by Category
             </h2>
           </span>
           <span className="sc-rule hidden min-[400px]:block"><LeafRule flip /></span>
         </div>
-        <p className="sc-sub mt-2 text-balance text-center text-[0.95rem] text-ink/80 md:mt-3 md:text-[1.08rem]">
+        <p className="sc-sub mt-2 text-balance text-center text-[0.939rem] text-ink/80 md:mt-3 md:text-[1.041rem]">
           Time-tested, naturally sourced products for your family&rsquo;s everyday wellbeing.
         </p>
 
@@ -102,10 +102,10 @@ export default function ShopByCategory() {
 
                 <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-3.5 sm:p-4 md:p-5 lg:p-6">
                   <span className="min-w-0 text-left">
-                    <span className="block font-serif text-[1.02rem] font-bold leading-tight text-white sm:text-[1.15rem] md:text-[1.3rem] lg:text-[1.55rem]">
+                    <span className="block font-serif text-[0.977rem] font-bold leading-tight text-white sm:text-[1.117rem] md:text-[1.279rem] lg:text-[1.549rem]">
                       {c.name}
                     </span>
-                    <span lang="ta" className="mt-1 block font-tamil-sans text-[0.74rem] text-white/85 md:text-[0.85rem]">
+                    <span lang="ta" className="mt-1 block font-tamil-sans text-[0.704rem] text-white/85 md:text-[0.827rem]">
                       {c.ta}
                     </span>
                   </span>

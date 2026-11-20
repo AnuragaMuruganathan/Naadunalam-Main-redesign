@@ -40,7 +40,7 @@ export default function PageIntro({
         <div className="min-w-0">
           {crumbs && crumbs.length > 0 && (
           <nav aria-label="Breadcrumb">
-            <ol className="flex flex-wrap items-center gap-1 text-[0.85rem] text-muted">
+            <ol className="flex flex-wrap items-center gap-1 text-[0.827rem] text-muted">
               {crumbs.map((c, i) => (
                 <li key={c.label} className="flex items-center gap-1">
                   {i > 0 && <ChevronRight className="size-3.5 opacity-60" aria-hidden />}
@@ -59,14 +59,14 @@ export default function PageIntro({
           </nav>
           )}
           {eyebrow && (
-            <p className={`${crumbs?.length ? "mt-5" : ""} flex items-center gap-3 text-[0.74rem] font-bold uppercase tracking-[0.22em] text-gold`}>
+            <p className={`${crumbs?.length ? "mt-5" : ""} flex items-center gap-3 text-[0.704rem] font-bold uppercase tracking-[0.22em] text-gold`}>
               {eyebrow}
             </p>
           )}
           <div className={`${eyebrow ? "mt-2" : crumbs?.length ? "mt-5" : ""} flex items-center gap-3`}>
             <h1
               className={`font-serif font-bold leading-tight text-forest-600 ${
-                compact ? "text-[1.75rem] md:text-[2.25rem]" : "text-[2rem] md:text-[2.75rem]"
+                compact ? "text-[1.713rem] md:text-[2.238rem]" : "text-[1.975rem] md:text-[2.763rem]"
               }`}
             >
               {title}
@@ -78,11 +78,11 @@ export default function PageIntro({
             )}
           </div>
           {ta && (
-            <p lang="ta" className={`font-tamil text-forest-800 ${compact ? "mt-0.5 text-[0.95rem] md:text-[1rem]" : "mt-1.5 text-[1rem] md:text-[1.1rem]"}`}>
+            <p lang="ta" className={`font-tamil text-forest-800 ${compact ? "mt-0.5 text-[0.939rem] md:text-[0.955rem]" : "mt-1.5 text-[0.955rem] md:text-[1.063rem]"}`}>
               {ta}
             </p>
           )}
-          {sub && <p className="mt-3 max-w-[60ch] text-pretty text-[0.98rem] text-ink/80 md:text-[1.05rem]">{sub}</p>}
+          {sub && <p className="mt-3 max-w-[60ch] text-pretty text-[0.973rem] text-ink/80 md:text-[1.009rem]">{sub}</p>}
         </div>
         {children && <div className="shrink-0">{children}</div>}
       </div>

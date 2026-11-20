@@ -1,37 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Lora, Nunito_Sans, Noto_Serif_Tamil, Noto_Sans_Tamil } from "next/font/google";
+import { Albert_Sans, Noto_Sans_Tamil } from "next/font/google";
 import SmoothScroll from "@/components/SmoothScroll";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Toaster from "@/components/shop/Toaster";
 import "./globals.css";
 
-const lora = Lora({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+/** Albert Sans for all Latin text. It has no Tamil glyphs, so Tamil falls back to Noto Sans Tamil. */
+const albert = Albert_Sans({
+  subsets: ["latin", "latin-ext"],
   style: ["normal", "italic"],
-  variable: "--font-lora",
+  variable: "--font-albert",
   display: "swap",
 });
 
-const nunito = Nunito_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "600", "700", "800"],
-  variable: "--font-nunito",
-  display: "swap",
-});
-
-const tamilSerif = Noto_Serif_Tamil({
+const tamil = Noto_Sans_Tamil({
   subsets: ["tamil"],
-  weight: ["500", "600", "700"],
-  variable: "--font-tamil-serif",
-  display: "swap",
-});
-
-const tamilSans = Noto_Sans_Tamil({
-  subsets: ["tamil"],
-  weight: ["400", "500", "600"],
-  variable: "--font-tamil-sans",
+  variable: "--font-noto-tamil",
   display: "swap",
 });
 
@@ -53,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${lora.variable} ${nunito.variable} ${tamilSerif.variable} ${tamilSans.variable}`}
+      className={`${albert.variable} ${tamil.variable}`}
     >
       <body>
         <SmoothScroll>

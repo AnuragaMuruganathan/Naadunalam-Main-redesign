@@ -76,7 +76,7 @@ export default function SevenGenerations() {
           gsap.timeline({
             scrollTrigger: {
               trigger: root.current,
-              start: "top 86px",
+              start: "top 72px",
               end: "+=140%",
               pin: true,
               scrub: 0.8,
@@ -108,7 +108,7 @@ export default function SevenGenerations() {
       aria-labelledby="sg-title"
       className="relative overflow-hidden bg-forest-800"
     >
-      <div className="relative aspect-[1672/941] w-full [@media(min-width:1024px)_and_(min-aspect-ratio:16/10)]:aspect-auto [@media(min-width:1024px)_and_(min-aspect-ratio:16/10)]:h-[calc(100svh-86px)]">
+      <div className="relative aspect-[1672/941] w-full [@media(min-width:1024px)_and_(min-aspect-ratio:16/10)]:aspect-auto [@media(min-width:1024px)_and_(min-aspect-ratio:16/10)]:h-[calc(100svh-72px)]">
         <div className="sg-bg absolute inset-0 will-change-transform">
           <Image
             src="/images/generations-arch.webp"
@@ -126,7 +126,7 @@ export default function SevenGenerations() {
           <span aria-hidden className="sg-title-rule hidden h-px w-16 origin-right bg-white/80 sm:block md:w-28" />
           <h2
             id="sg-title"
-            className="sg-title text-center font-serif text-[clamp(0.95rem,2.2vw,2.1rem)] font-medium uppercase tracking-[0.14em] text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.35)]"
+            className="sg-title text-center font-serif text-[clamp(0.939rem,2.31vw,2.08rem)] font-medium uppercase tracking-[0.14em] text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.35)]"
           >
             The Legacy of Seven Generations
           </h2>
@@ -176,7 +176,7 @@ export default function SevenGenerations() {
                     {t}
                   </tspan>
                 ))}
-                <tspan x={n.label.x} dy="24" fontFamily="var(--font-nunito)" fontSize="16" fontWeight="600" fill="#7a5a2c">
+                <tspan x={n.label.x} dy="24" fontFamily="var(--font-sans)" fontSize="15" fontWeight="600" fill="#7a5a2c">
                   ({n.ord})
                 </tspan>
               </text>
@@ -200,7 +200,7 @@ export default function SevenGenerations() {
         {[...nodes].reverse().map((n) => (
           <li key={n.n} className="sg-chip shrink-0 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-center text-white">
             <span lang="ta" className="block font-tamil-sans text-sm font-semibold">{n.ta.join(" · ")}</span>
-            <span className="block text-[0.72rem] text-white/70">{n.ord} · {n.en}</span>
+            <span className="block text-[0.681rem] text-white/70">{n.ord} · {n.en}</span>
           </li>
         ))}
       </ol>

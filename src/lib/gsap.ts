@@ -21,7 +21,7 @@ export function scrollToHash(hash: string) {
   }
   const el = document.querySelector(hash);
   if (!el) return;
-  const offset = window.innerWidth >= 768 ? 86 : 76;
+  const offset = window.innerWidth >= 768 ? 72 : 64;
   if (lenis) lenis.scrollTo(el, { offset: -offset, duration: 1.2 });
   else window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset, behavior: "smooth" });
 }

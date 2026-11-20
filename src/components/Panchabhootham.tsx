@@ -46,7 +46,7 @@ export default function Panchabhootham() {
       ref={root}
       id="panchabhootham"
       aria-labelledby="pb-title"
-      className="grain flex min-h-[calc(100svh-76px)] flex-col justify-center bg-cream py-[clamp(1.25rem,4svh,3rem)] md:min-h-[calc(100svh-86px)]"
+      className="grain flex min-h-[calc(100svh-64px)] flex-col justify-center bg-cream py-[clamp(1.25rem,4svh,3rem)] md:min-h-[calc(100svh-72px)]"
     >
       <div className="mx-auto w-full max-w-[1320px] px-5 md:px-8">
         <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-5">
@@ -54,17 +54,17 @@ export default function Panchabhootham() {
           <span className="overflow-hidden">
             <h2
               id="pb-title"
-              className="pb-title text-center font-serif text-[1.65rem] font-bold leading-tight text-forest-600 min-[400px]:text-[1.85rem] md:text-[2.75rem]"
+              className="pb-title text-center font-serif text-[1.607rem] font-bold leading-tight text-forest-600 min-[400px]:text-[1.818rem] md:text-[2.763rem]"
             >
               Iyarkai Panchabhootham
             </h2>
           </span>
           <span className="pb-rule hidden min-[480px]:block"><LeafRule flip /></span>
         </div>
-        <p lang="ta" className="pb-sub mt-2 text-center font-tamil text-[1.05rem] font-semibold text-forest-700 md:text-[1.2rem]">
+        <p lang="ta" className="pb-sub mt-2 text-center font-tamil text-[1.009rem] font-semibold text-forest-700 md:text-[1.171rem]">
           இயற்கை பஞ்சபூதம்
         </p>
-        <p className="pb-sub mx-auto mt-2 max-w-[52ch] text-balance text-center text-[1rem] text-ink/80 md:text-[1.08rem]">
+        <p className="pb-sub mx-auto mt-2 max-w-[52ch] text-balance text-center text-[0.955rem] text-ink/80 md:text-[1.041rem]">
           Earth, water, fire, air and space: the five elements that nourish every grain we grow.
         </p>
 
@@ -108,12 +108,12 @@ export default function Panchabhootham() {
                       <Icon className="size-5 transition-transform duration-500 group-hover:rotate-12" strokeWidth={1.6} />
                     </span>
                     <h3 className="mt-2.5 leading-tight">
-                      <span lang="ta" className="block font-tamil text-[1.3rem] font-bold text-forest-600">
+                      <span lang="ta" className="block font-tamil text-[1.279rem] font-bold text-forest-600">
                         {el.ta}
                       </span>
                       <span className="sr-only"> ({el.en})</span>
                     </h3>
-                    <p className="mt-2 text-[0.92rem] leading-snug text-muted">{el.desc}</p>
+                    <p className="mt-2 text-[0.905rem] leading-snug text-muted">{el.desc}</p>
                   </div>
                 </motion.article>
               </li>

@@ -19,10 +19,20 @@
   --color-ink: #1c2a1f;
   --color-muted: #4b544c;
 
-  --font-serif: var(--font-lora), "Lora", Georgia, serif;
-  --font-sans: var(--font-nunito), "Nunito Sans", system-ui, sans-serif;
-  --font-tamil: var(--font-tamil-serif), "Noto Serif Tamil", serif;
-  --font-tamil-sans: var(--font-tamil-sans), "Noto Sans Tamil", sans-serif;
+  /* One family site-wide: Albert Sans, with Noto Sans Tamil for Tamil script.
+     The serif/tamil tokens are kept so existing classes keep working. */
+  --font-serif: var(--font-albert), var(--font-noto-tamil), "Albert Sans", "Noto Sans Tamil", system-ui, sans-serif;
+  --font-sans: var(--font-albert), var(--font-noto-tamil), "Albert Sans", "Noto Sans Tamil", system-ui, sans-serif;
+  --font-tamil: var(--font-albert), var(--font-noto-tamil), "Albert Sans", "Noto Sans Tamil", system-ui, sans-serif;
+  --font-tamil-sans: var(--font-albert), var(--font-noto-tamil), "Albert Sans", "Noto Sans Tamil", system-ui, sans-serif;
+
+  /* Named sizes: 11/13/15/17/19/23px */
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.0625rem;
+  --text-xl: 1.1875rem;
+  --text-2xl: 1.4375rem;
 
   --ease-organic: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -56,10 +66,22 @@ body {
   background: var(--color-cream);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: 0.9375rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/*
+ * Tamil text: one style site-wide — Noto Sans Tamil Medium, as in the logo's
+ * "நாடு நலம் • இயற்கையின் நலம்" line. Unlayered, so it wins over per-element
+ * weight utilities (font-bold etc.); :lang() lets nested lang="en" labels keep
+ * their own style.
+ */
+:lang(ta) {
+  font-family: var(--font-tamil-sans);
+  font-weight: 500;
+  font-style: normal;
 }
 
 ::selection {
@@ -96,6 +118,75 @@ button {
   pointer-events: none;
   opacity: 0.35;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.45 0 0 0 0 0.3 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/*
+ * Scrollbars: a pale green rail with a rounded leaf-green thumb.
+ * The page scrollbar (styled on html and body: Chrome takes the viewport
+ * scrollbar from body first) is wide enough to carry a small leaf mark; inner
+ * scroll areas (order list, filter drawer, dropdowns) get a slimmer
+ * thumb without it. Chrome/Edge/Safari use the ::-webkit-scrollbar
+ * styles; Firefox can only take colours, so it gets those instead
+ * (setting scrollbar-color in Chrome would switch the custom styles off).
+ */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background:
+    linear-gradient(90deg, transparent 3px, #dfe9cc 3px, #dfe9cc 7px, transparent 7px),
+    transparent;
+}
+::-webkit-scrollbar-thumb {
+  min-height: 40px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #7da843, #3f7a2a);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #6c9a36, #2f6a22);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 18px;
+}
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background:
+    linear-gradient(90deg, transparent 7px, #dfe9cc 7px, #dfe9cc 11px, transparent 11px),
+    var(--color-cream);
+}
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  min-height: 72px;
+  border: 2px solid transparent;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z'/%3E%3Cpath d='M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12'/%3E%3C/svg%3E")
+      center / 11px 11px no-repeat,
+    linear-gradient(180deg, #7da843, #3f7a2a);
+  background-clip: padding-box;
+}
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z'/%3E%3Cpath d='M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12'/%3E%3C/svg%3E")
+      center / 11px 11px no-repeat,
+    linear-gradient(180deg, #6c9a36, #2f6a22);
+  background-clip: padding-box;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-color: #5a8f33 #e6eed7;
+    scrollbar-width: thin;
+  }
+  html {
+    scrollbar-width: auto;
+  }
 }
 
 .no-scrollbar {

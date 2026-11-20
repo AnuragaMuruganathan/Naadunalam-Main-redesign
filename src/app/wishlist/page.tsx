@@ -19,7 +19,7 @@ export default async function WishlistPage({
     .filter((n) => Number.isInteger(n) && n > 0);
 
   return (
-    <main id="main" className="pt-[112px] md:pt-[122px]">
+    <main id="main" className="pt-[96px] md:pt-[104px]">
       <WishlistView shared={shared} />
       <Perks />
     </main>

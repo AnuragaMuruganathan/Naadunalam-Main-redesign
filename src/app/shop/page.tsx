@@ -26,7 +26,7 @@ export default async function ShopPage({
   };
 
   return (
-    <main id="main" className="pt-[112px] md:pt-[122px]">
+    <main id="main" className="pt-[96px] md:pt-[104px]">
       {/* Remount when a menu link changes the filters, so the view starts from the new URL */}
       <ShopView key={`${initial.categories.join(",")}|${initial.q}`} initial={initial} />
       <Perks />

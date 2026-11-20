@@ -18,8 +18,8 @@ export default function Perks() {
               <Icon className="size-[22px]" strokeWidth={1.6} aria-hidden />
             </span>
             <span className="min-w-0 pt-0.5">
-              <span className="block font-serif text-[1rem] font-bold leading-snug text-forest-700">{title}</span>
-              <span className="mt-0.5 block text-[0.86rem] leading-snug text-muted">{body}</span>
+              <span className="block font-serif text-[0.955rem] font-bold leading-snug text-forest-700">{title}</span>
+              <span className="mt-0.5 block text-[0.838rem] leading-snug text-muted">{body}</span>
             </span>
           </li>
         ))}

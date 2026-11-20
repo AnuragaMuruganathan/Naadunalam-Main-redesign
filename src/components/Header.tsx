@@ -5,15 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
-import { ChevronDown, Heart, Menu, Phone, Search, ShoppingCart, Truck, User, X } from "lucide-react";
+import { ChevronDown, ChevronRight, Heart, Menu, Phone, Search, ShoppingCart, Truck, User, X } from "lucide-react";
 import BrandLockup from "./BrandLockup";
-import { NAV, STORE } from "@/lib/content";
+import { NAV, OTHERS, STORE } from "@/lib/content";
 import { PRODUCTS, SHOP_CATEGORIES } from "@/lib/catalog";
 import { scrollToHash } from "@/lib/gsap";
 import { rupees } from "@/lib/format";
 import { useShop } from "@/lib/store";
 
-const TOPBAR_H = 36;
+const TOPBAR_H = 32;
 const MotionLink = motion.create(Link);
 type NavItem = (typeof NAV)[number];
 type NavLabel = NavItem["label"];
@@ -27,12 +27,11 @@ export default function Header() {
   const isHome = pathname === "/";
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
-  const [hovered, setHovered] = useState<string | null>(null);
   const [spy, setSpy] = useState<NavLabel>("Home");
   const [shopOpen, setShopOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileOthers, setMobileOthers] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [lang, setLang] = useState<"EN" | "த">("EN");
   const { cart, wishlist, hydrated } = useShop();
   const cartCount = hydrated ? cart.reduce((n, l) => n + l.qty, 0) : 0;
   const wishCount = hydrated ? wishlist.length : 0;
@@ -48,7 +47,7 @@ export default function Header() {
   const updateSpy = useCallback(() => {
     if (window.location.pathname !== "/" || performance.now() < lockUntil.current) return;
     const vh = window.innerHeight;
-    const headerH = window.innerWidth >= 768 ? 86 : 76;
+    const headerH = window.innerWidth >= 768 ? 72 : 64;
     const line = headerH + (vh - headerH) / 3;
     const remaining = Math.max(0, document.documentElement.scrollHeight - vh - window.scrollY);
     const sections = NAV.filter((n): n is Extract<NavItem, { section: string }> => "section" in n)
@@ -130,7 +129,6 @@ export default function Header() {
     scrollToHash(item.section);
   };
 
-  const indicator = hovered ?? pageActive;
 
   return (
     <>
@@ -140,28 +138,14 @@ export default function Header() {
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       >
         {/* Top utility bar */}
-        <div className="bg-forest-800 text-[0.8rem] text-white/95" style={{ height: TOPBAR_H }}>
+        <div className="bg-forest-800 text-[0.771rem] text-white/95" style={{ height: TOPBAR_H }}>
           <div className="mx-auto flex h-full max-w-[1320px] items-center justify-between gap-4 px-4 md:px-8">
-            <p className="truncate font-medium tracking-wide">From Our Land to Your Family</p>
+            <TopBarTicker />
             <div className="flex shrink-0 items-center gap-4">
-              <span className="hidden items-center gap-1.5 lg:flex">
-                <Truck className="size-3.5 text-gold-soft" aria-hidden />
-                {STORE.delivery}
-              </span>
-              <span aria-hidden className="hidden h-3.5 w-px bg-white/40 lg:block" />
               <a href={`tel:${STORE.tel}`} className="flex items-center gap-1.5 transition-colors hover:text-gold-soft">
                 <Phone className="size-3.5" aria-hidden />
                 <span className="max-sm:sr-only">Call {STORE.phone}</span>
               </a>
-              <span aria-hidden className="hidden h-3.5 w-px bg-white/40 sm:block" />
-              <button
-                type="button"
-                onClick={() => setLang((l) => (l === "EN" ? "த" : "EN"))}
-                className="hidden cursor-pointer items-center gap-1 transition-colors hover:text-gold-soft sm:flex"
-                aria-label={`Language: ${lang === "EN" ? "English" : "Tamil"}. Switch language`}
-              >
-                {lang} <ChevronDown className="size-3.5" aria-hidden />
-              </button>
             </div>
           </div>
         </div>
@@ -172,7 +156,7 @@ export default function Header() {
             scrolled || !isHome ? "border-forest-600/12" : "border-transparent"
           }`}
         >
-          <div className="mx-auto flex h-[76px] max-w-[1320px] items-center justify-between gap-3 px-4 md:h-[86px] md:gap-6 md:px-8">
+          <div className="mx-auto flex h-[64px] max-w-[1320px] items-center justify-between gap-3 px-4 md:h-[72px] md:gap-6 md:px-8">
             <Link
               href="/"
               onClick={(e) => go(e, NAV[0])}
@@ -182,7 +166,7 @@ export default function Header() {
               <BrandLockup />
             </Link>
 
-            <nav aria-label="Primary" className="hidden xl:block" onMouseLeave={() => setHovered(null)}>
+            <nav aria-label="Primary" className="hidden xl:block">
               <ul className="flex items-center gap-0.5 2xl:gap-2">
                 {NAV.map((item) => {
                   const isActive = pageActive === item.label;
@@ -192,7 +176,6 @@ export default function Header() {
                       key={item.label}
                       className="relative"
                       onMouseEnter={() => {
-                        setHovered(item.label);
                         if (isShop) setShopOpen(true);
                       }}
                       onMouseLeave={() => isShop && setShopOpen(false)}
@@ -205,13 +188,13 @@ export default function Header() {
                         aria-current={isActive ? (isHome ? "true" : "page") : undefined}
                         aria-haspopup={isShop ? "true" : undefined}
                         aria-expanded={isShop ? shopOpen : undefined}
-                        className={`relative flex items-center gap-1 whitespace-nowrap px-3 py-3 text-[0.95rem] font-semibold transition-colors ${
+                        className={`relative flex items-center gap-1 whitespace-nowrap px-3 py-3 text-[0.939rem] font-semibold transition-colors ${
                           isActive ? "text-forest-600" : "text-ink hover:text-forest-600"
                         }`}
                       >
                         {item.label}
                         {item.label === "Wishlist" && wishCount > 0 && (
-                          <span className="grid h-[18px] min-w-[18px] place-items-center rounded-full bg-gold-soft px-1 text-[0.66rem] font-bold text-forest-950">
+                          <span className="grid h-[18px] min-w-[18px] place-items-center rounded-full bg-gold-soft px-1 text-[0.625rem] font-bold text-forest-950">
                             {wishCount}
                             <span className="sr-only"> saved</span>
                           </span>
@@ -220,13 +203,6 @@ export default function Header() {
                           <ChevronDown
                             aria-hidden
                             className={`size-3.5 transition-transform duration-300 ${shopOpen ? "rotate-180" : ""}`}
-                          />
-                        )}
-                        {indicator === item.label && (
-                          <motion.span
-                            layoutId="nav-underline"
-                            className="absolute inset-x-3 -bottom-0.5 h-[2px] rounded-full bg-forest-600"
-                            transition={{ type: "spring", stiffness: 420, damping: 34 }}
                           />
                         )}
                       </Link>
@@ -279,6 +255,7 @@ export default function Header() {
                     </li>
                   );
                 })}
+                <OthersMenu />
               </ul>
             </nav>
 
@@ -291,7 +268,7 @@ export default function Header() {
               >
                 {searchOpen ? <X className="size-[22px]" strokeWidth={1.8} /> : <Search className="size-[22px]" strokeWidth={1.8} />}
               </IconBtn>
-              <IconBtn label={`Wishlist, ${wishCount} saved`} href="/wishlist" className="xl:hidden">
+              <IconBtn label={`Wishlist, ${wishCount} saved`} href="/wishlist" className="max-[429px]:hidden xl:hidden">
                 <Heart className="size-[22px]" strokeWidth={1.8} />
                 <Badge n={wishCount} tone="gold" />
               </IconBtn>
@@ -385,7 +362,7 @@ export default function Header() {
                     <Link
                       href={item.href}
                       onClick={(e) => (item.label === "Your Cart" ? setMenuOpen(false) : go(e, item as NavItem))}
-                      className={`flex items-center gap-3 py-2 font-serif text-[1.85rem] font-semibold ${
+                      className={`flex items-center gap-3 py-2 font-serif text-[1.818rem] font-semibold ${
                         pageActive === item.label || (item.label === "Your Cart" && pathname === "/cart")
                           ? "text-gold-soft"
                           : "text-white"
@@ -401,6 +378,51 @@ export default function Header() {
                     </Link>
                   </motion.li>
                 ))}
+                <motion.li
+                  initial={{ opacity: 0, x: -24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 + (NAV.length + 1) * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setMobileOthers((o) => !o)}
+                    aria-expanded={mobileOthers}
+                    className="flex cursor-pointer items-center gap-3 py-2 font-serif text-[1.818rem] font-semibold text-white"
+                  >
+                    Others
+                    <ChevronDown className={`size-6 transition-transform duration-300 ${mobileOthers ? "rotate-180" : ""}`} aria-hidden />
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {mobileOthers && (
+                      <motion.ul
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                        className="overflow-hidden border-l border-white/15 pl-5"
+                      >
+                        {OTHERS.map((o) => (
+                          <li key={o.label}>
+                            <a href={o.href} className="flex min-h-11 items-center text-[1.025rem] font-semibold text-white/90 hover:text-gold-soft">
+                              {o.label}
+                            </a>
+                            {o.children && (
+                              <ul className="mb-1 ml-1 border-l border-white/10 pl-4">
+                                {o.children.map((c) => (
+                                  <li key={c.label}>
+                                    <a href={c.href} className="flex min-h-10 items-center text-[0.875rem] text-white/70 hover:text-gold-soft">
+                                      {c.label}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                </motion.li>
               </ul>
               <motion.div
                 initial={{ opacity: 0 }}
@@ -418,6 +440,114 @@ export default function Header() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+/**
+ * "Others" dropdown: links to pages on the original site. Collaborators opens
+ * a fly-out (to the right, or to the left when there's no room).
+ */
+function OthersMenu() {
+  const [open, setOpen] = useState(false);
+  const [sub, setSub] = useState<string | null>(null);
+  const [flip, setFlip] = useState(false);
+  const close = () => {
+    setOpen(false);
+    setSub(null);
+  };
+  const openSub = (el: HTMLElement, label: string) => {
+    setFlip(el.getBoundingClientRect().right + 320 > window.innerWidth);
+    setSub(label);
+  };
+  const item =
+    "flex w-full min-h-11 cursor-pointer items-center justify-between gap-3 rounded-xl px-4 text-left text-[0.875rem] font-semibold text-ink transition-colors hover:bg-cream hover:text-forest-600";
+
+  return (
+    <li
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={close}
+      onKeyDown={(e) => e.key === "Escape" && close()}
+      onBlur={(e) => !e.currentTarget.contains(e.relatedTarget as Node) && close()}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="true"
+        aria-expanded={open}
+        className="relative flex cursor-pointer items-center gap-1 whitespace-nowrap px-3 py-3 text-[0.939rem] font-semibold text-ink transition-colors hover:text-forest-600"
+      >
+        Others
+        <ChevronDown aria-hidden className={`size-3.5 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 6, scale: 0.98, transition: { duration: 0.15 } }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute left-0 top-full z-10 w-[250px] pt-3"
+          >
+            <ul className="rounded-2xl border border-forest-600/10 bg-paper p-2 shadow-[0_24px_60px_-20px_rgba(10,57,25,0.35)]">
+              {OTHERS.map((o) => (
+                <li
+                  key={o.label}
+                  className="relative"
+                  onMouseEnter={(e) => (o.children ? openSub(e.currentTarget, o.label) : setSub(null))}
+                >
+                  {o.children ? (
+                    <>
+                      <button
+                        type="button"
+                        aria-haspopup="true"
+                        aria-expanded={sub === o.label}
+                        onClick={(e) => (sub === o.label ? setSub(null) : openSub(e.currentTarget, o.label))}
+                        className={`${item} ${sub === o.label ? "bg-cream text-forest-600" : ""}`}
+                      >
+                        {o.label}
+                        <ChevronRight className="size-4" aria-hidden />
+                      </button>
+                      <AnimatePresence>
+                        {sub === o.label && (
+                          <motion.div
+                            initial={{ opacity: 0, x: flip ? 8 : -8 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, transition: { duration: 0.12 } }}
+                            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                            className={`absolute -top-2 w-[300px] ${flip ? "right-full pr-2" : "left-full pl-2"}`}
+                          >
+                            <ul className="rounded-2xl border border-forest-600/10 bg-paper p-2 shadow-[0_24px_60px_-20px_rgba(10,57,25,0.35)]">
+                              {o.children.map((c) => (
+                                <li key={c.label}>
+                                  <a href={c.href} className={item}>
+                                    {c.label}
+                                  </a>
+                                </li>
+                              ))}
+                              <li className="mt-1 border-t border-forest-600/10 pt-1">
+                                <a href={o.href} className={`${item} text-forest-600`}>
+                                  View all collaborators
+                                  <span aria-hidden>→</span>
+                                </a>
+                              </li>
+                            </ul>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </>
+                  ) : (
+                    <a href={o.href} className={item}>
+                      {o.label}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </li>
   );
 }
 
@@ -521,7 +651,7 @@ function Badge({ n, tone = "forest" }: { n: number; tone?: "forest" | "gold" }) 
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.4, opacity: 0 }}
           transition={{ type: "spring", stiffness: 500, damping: 22 }}
-          className={`absolute right-0.5 top-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full px-1 text-[0.62rem] font-bold ring-2 ring-paper ${
+          className={`absolute right-0.5 top-0.5 grid h-[18px] min-w-[18px] place-items-center rounded-full px-1 text-[0.625rem] font-bold ring-2 ring-paper ${
             tone === "gold" ? "bg-gold-soft text-forest-950" : "bg-forest-600 text-white"
           }`}
         >
@@ -560,5 +690,56 @@ function IconBtn({
     <motion.button type="button" aria-label={label} aria-expanded={expanded} onClick={onClick} className={cls} {...motionProps}>
       {children}
     </motion.button>
+  );
+}
+
+/* ---------------------------------------------------------------- Top bar ticker */
+
+const TICKER: { icon?: typeof Truck; text: string }[] = [
+  { text: "From Our Land to Your Family" },
+  { icon: Truck, text: STORE.delivery },
+];
+
+/**
+ * The top bar's left side: messages take turns, each sliding up into place.
+ * Pauses while hovered or focused; reduced-motion users get a plain fade
+ * (MotionConfig reducedMotion="user" drops the transform).
+ */
+function TopBarTicker() {
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const t = window.setInterval(() => setI((n) => (n + 1) % TICKER.length), 4000);
+    return () => window.clearInterval(t);
+  }, [paused]);
+
+  const { icon: Icon, text } = TICKER[i];
+  return (
+    <div
+      className="relative h-full min-w-0 flex-1 overflow-hidden"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      {/* Screen readers get both messages once, not a changing region */}
+      <p className="sr-only">{TICKER.map((m) => m.text).join(". ")}</p>
+      <AnimatePresence initial={false} mode="popLayout">
+        <motion.p
+          key={text}
+          aria-hidden
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          exit={{ y: "-100%", opacity: 0 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-0 flex items-center gap-1.5 truncate font-medium tracking-wide"
+        >
+          {Icon && <Icon className="size-3.5 shrink-0 text-gold-soft" aria-hidden />}
+          <span className="truncate">{text}</span>
+        </motion.p>
+      </AnimatePresence>
+    </div>
   );
 }

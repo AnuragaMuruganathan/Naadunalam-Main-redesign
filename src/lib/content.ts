@@ -5,11 +5,33 @@
 export const NAV = [
   { label: "Home", href: "/", section: "#top" },
   { label: "Shop", href: "/shop", section: "#shop", dropdown: true },
-  { label: "Panchabhootham", href: "/#panchabhootham", section: "#panchabhootham" },
-  { label: "7 Generations", href: "/#generations", section: "#generations" },
   { label: "Wishlist", href: "/wishlist" },
   { label: "About Us", href: "/#about", section: "#about" },
 ] as const;
+
+/**
+ * "Others" menu, as on the original site. These pages live on the original
+ * store (naadunalam.fastfilings.in) and are not part of this site yet.
+ */
+const ORIGIN = "https://naadunalam.fastfilings.in";
+export type OtherLink = { label: string; href: string; children?: OtherLink[] };
+export const OTHERS: OtherLink[] = [
+  {
+    label: "Collaborators",
+    href: `${ORIGIN}/collaborators/`,
+    children: [
+      { label: "TST Music & Dance Academy", href: `${ORIGIN}/collaborators/tst-music-dance-academy/` },
+      { label: "TST Event Mgt", href: `${ORIGIN}/collaborators/tst-event-mgt/` },
+      { label: "Ignite Our Tharas Kids Kondaatam", href: `${ORIGIN}/collaborators/ignite-our-tharas-kids-kondaatam/` },
+      { label: "Queen Bee’s Math Tutoring", href: `${ORIGIN}/collaborators/queen-bees-math-tutoring/` },
+      { label: "Bharathanaatiyam", href: `${ORIGIN}/collaborators/bharathanaatiyam/` },
+    ],
+  },
+  { label: "Events", href: `${ORIGIN}/events/` },
+  { label: "Calendar", href: `${ORIGIN}/calendar/` },
+  { label: "Research Articles", href: `${ORIGIN}/research-articles/` },
+  { label: "Blog", href: `${ORIGIN}/blog/` },
+];
 
 /** Store contact details, from the original site. */
 export const STORE = {

@@ -41,6 +41,10 @@ const SCENES = [
   { from: "Smiling Tamil Family Portrait in Traditional Attire.png", to: "generations-family.webp", width: 1974, quality: 78 },
   // xl-only, mostly under a gradient: fills the column height, so keep the height.
   { from: "Golden Sunset in Tamil Nadu Village.png", to: "footer-village.webp", width: 1774, quality: 72 },
+  // Shop page banner: full-bleed, at most ~250 CSS px tall. Phones get the right-hand
+  // (kitchen) part only, sized for a ~240 px tall band at 2x.
+  { from: "Shop Banner Village Kitchen.png", to: "shop-banner.webp", width: 2172, quality: 72 },
+  { from: "Shop Banner Village Kitchen.png", to: "shop-banner-m.webp", extract: { left: 700, top: 0, width: 1472, height: 724 }, height: 480, quality: 70 },
   // Home "Shop by Category" cards, at most 470 CSS px wide.
   { from: "Golden Millet in Rustic Clay Bowl.png", to: "cat-millets.webp", width: 1000, quality: 76 },
   { from: "Rustic Grain and Golden Oil Still Life.png", to: "cat-oils.webp", width: 1000, quality: 76 },
@@ -86,13 +90,14 @@ function add(outRel, srcPath, build) {
   plan.set(out, { src: srcPath, build });
 }
 
-async function webp(srcPath, { width, height, fit = "inside", quality, alphaQuality = 90 }) {
+async function webp(srcPath, { width, height, fit = "inside", quality, alphaQuality = 90, extract }) {
   const input = fs.readFileSync(srcPath);
   bytesIn += input.length;
   const meta = await sharp(input).metadata();
-  const resized = (width && meta.width > width) || (height && meta.height > height);
-  const out = await sharp(input)
-    .rotate()
+  const resized = Boolean(extract) || (width && meta.width > width) || (height && meta.height > height);
+  let img = sharp(input).rotate();
+  if (extract) img = sharp(await img.extract(extract).toBuffer());
+  const out = await img
     .resize({ width, height, fit, withoutEnlargement: true })
     .webp({ quality, alphaQuality, effort: 6, smartSubsample: true })
     .toBuffer();

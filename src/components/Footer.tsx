@@ -70,7 +70,7 @@ export default function Footer() {
        * flush under the header: nothing hidden beneath it, nothing cut off.
        * Type and spacing scale with screen height so it all fits.
        */
-      className="relative flex min-h-[calc(100svh-77px)] flex-col overflow-hidden bg-forest-900 text-white md:min-h-[calc(100svh-87px)]"
+      className="relative flex min-h-[calc(100svh-65px)] flex-col overflow-hidden bg-forest-900 text-white md:min-h-[calc(100svh-73px)]"
     >
       {/* Village scene, fading into the green on its left edge */}
       <div className="ft-village pointer-events-none absolute inset-y-0 right-0 hidden w-[34%] overflow-hidden xl:block">
@@ -84,11 +84,11 @@ export default function Footer() {
       <div className="relative mx-auto flex w-full max-w-[1320px] flex-1 flex-col justify-center px-5 py-[clamp(1.25rem,4svh,4.5rem)] md:px-8">
         {/* Closing statement */}
         <div className="ft-col xl:w-[calc(66vw-96px)] xl:max-w-[900px]">
-          <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-gold-soft md:text-[0.78rem]">From Our Land to Your Family</p>
-          <h2 className="mt-[clamp(0.4rem,1.2svh,0.75rem)] text-balance font-serif text-[clamp(1.3rem,2.4svh+0.45rem,2.1rem)] sm:max-w-[22ch] font-bold leading-[1.15] text-white md:text-[clamp(1.9rem,3.6svh+0.6rem,3.25rem)]">
+          <p className="text-[0.681rem] font-bold uppercase tracking-[0.06em] text-gold-soft md:text-[0.749rem]">From Our Land to Your Family</p>
+          <h2 className="mt-[clamp(0.4rem,1.2svh,0.75rem)] text-balance font-serif text-[clamp(1.279rem,2.52svh+0.379rem,2.08rem)] sm:max-w-[22ch] font-bold leading-[1.15] text-white md:text-[clamp(1.87rem,3.78svh+0.547rem,3.288rem)]">
             Seven generations of wellbeing, rooted in our land.
           </h2>
-          <p lang="ta" className="mt-[clamp(0.3rem,1svh,0.75rem)] whitespace-nowrap font-tamil text-[0.88rem] text-white/80 sm:text-[0.95rem] md:whitespace-normal md:text-[clamp(1rem,1.2svh+0.45rem,1.2rem)]">
+          <p lang="ta" className="mt-[clamp(0.3rem,1svh,0.75rem)] whitespace-nowrap font-tamil text-[0.861rem] text-white/80 sm:text-[0.939rem] md:whitespace-normal md:text-[clamp(0.955rem,1.296svh+0.379rem,1.171rem)]">
             ஏழு தலைமுறைகளின் நலம் – நாடு நலம்
           </p>
           <Link
@@ -111,7 +111,7 @@ export default function Footer() {
             <Link href="/" onClick={(e) => go(e, "/")} aria-label="Naadu Nalam — home" className="min-w-0 max-sm:hidden">
               <BrandLockup tone="dark" size="fluid" divider={false} />
             </Link>
-            <p className="mt-[clamp(0.75rem,2svh,1.25rem)] hidden max-w-[34ch] text-[0.95rem] leading-relaxed text-white/85 md:block">
+            <p className="mt-[clamp(0.75rem,2svh,1.25rem)] hidden max-w-[34ch] text-[0.939rem] leading-relaxed text-white/85 md:block">
               Bringing the wisdom of our land, nature and Tamil heritage to the wellbeing of every generation.
             </p>
             <ul className="flex shrink-0 gap-2.5 md:mt-[clamp(0.75rem,2svh,1.25rem)] md:gap-3" aria-label="Social media">
@@ -136,14 +136,14 @@ export default function Footer() {
           <div className="grid grid-cols-3 gap-2.5 sm:gap-8">
             {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
               <nav key={heading} aria-label={heading} className="ft-col min-w-0">
-                <h3 className="font-serif text-[1rem] font-semibold text-white md:text-[1.08rem]">{heading}</h3>
+                <h3 className="font-serif text-[0.955rem] font-semibold text-white md:text-[1.041rem]">{heading}</h3>
                 <ul className="mt-[clamp(0.35rem,1.2svh,0.75rem)] space-y-[clamp(0.05rem,0.5svh,0.375rem)]">
                   {links.map(([label, href]) => (
                     <li key={label}>
                       <Link
                         href={href}
                         onClick={(e) => go(e, href)}
-                        className="group relative inline-block py-[clamp(0.2rem,0.45svh,0.3rem)] whitespace-nowrap text-[0.82rem] leading-snug text-white/80 transition-colors hover:text-white max-[370px]:text-[0.76rem] sm:text-[0.93rem]"
+                        className="group relative inline-block py-[clamp(0.2rem,0.45svh,0.3rem)] whitespace-nowrap text-[0.793rem] leading-snug text-white/80 transition-colors hover:text-white max-[370px]:text-[0.726rem] sm:text-[0.917rem]"
                       >
                         {label}
                         <span className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-gold-soft transition-transform duration-300 group-hover:scale-x-100" />
@@ -158,9 +158,9 @@ export default function Footer() {
       </div>
 
       <div className="relative border-t border-white/15 bg-forest-950/40">
-        <div className="mx-auto flex max-w-[1320px] flex-wrap items-center justify-between gap-x-3 gap-y-1 px-5 py-[clamp(0.6rem,1.6svh,1rem)] text-[0.8rem] text-white/85 md:px-8 md:text-[0.88rem]">
+        <div className="mx-auto flex max-w-[1320px] flex-wrap items-center justify-between gap-x-3 gap-y-1 px-5 py-[clamp(0.6rem,1.6svh,1rem)] text-[0.771rem] text-white/85 md:px-8 md:text-[0.861rem]">
           <p className="whitespace-nowrap">&copy; 2026 Naadu Nalam<span className="max-sm:hidden">. All Rights Reserved.</span></p>
-          <p lang="ta" className="whitespace-nowrap font-tamil text-[0.78rem] text-white sm:text-[0.85rem] md:text-[0.95rem]">
+          <p lang="ta" className="whitespace-nowrap font-tamil text-[0.749rem] text-white sm:text-[0.827rem] md:text-[0.939rem]">
             நாடு நலம் • இயற்கையின் நலம்
           </p>
         </div>

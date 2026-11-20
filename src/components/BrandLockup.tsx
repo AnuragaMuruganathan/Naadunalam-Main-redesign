@@ -19,7 +19,7 @@ export default function BrandLockup({ tone = "light", size = "md", divider = tru
       ? "size-[80px] md:size-[92px]"
       : size === "fluid"
         ? "size-[clamp(52px,8.5svh,92px)]"
-        : "size-[44px] min-[360px]:size-[50px] sm:size-[56px] md:size-[68px]";
+        : "size-[44px] min-[360px]:size-[50px] sm:size-[52px] md:size-[58px]";
   return (
     <span className="flex items-center gap-2 min-[360px]:gap-2.5 md:gap-4">
       <span
@@ -48,17 +48,17 @@ export default function BrandLockup({ tone = "light", size = "md", divider = tru
         <span
           className={`whitespace-nowrap font-serif font-bold tracking-[-0.01em] ${
             size === "lg"
-              ? "text-[1.6rem] md:text-[1.85rem]"
+              ? "text-[1.555rem] md:text-[1.818rem]"
               : size === "fluid"
-                ? "text-[clamp(1.3rem,2.4svh+0.45rem,1.85rem)]"
-                : "text-[1.08rem] min-[360px]:text-[1.2rem] sm:text-[1.3rem] md:text-[1.6rem]"
+                ? "text-[clamp(1.279rem,2.52svh+0.379rem,1.818rem)]"
+                : "text-[1.041rem] min-[360px]:text-[1.171rem] sm:text-[1.279rem] md:text-[1.555rem]"
           } ${onDark ? "text-white" : "text-forest-600"}`}
         >
           Naadu Nalam
         </span>
         <span
           lang="ta"
-          className={`mt-1.5 whitespace-nowrap font-tamil-sans text-[0.62rem] font-medium max-[369px]:hidden sm:text-[0.68rem] md:text-[0.74rem] ${
+          className={`mt-1.5 whitespace-nowrap font-tamil-sans text-[0.62rem] font-medium max-[369px]:hidden sm:text-[0.637rem] md:text-[0.704rem] ${
             onDark ? "text-white/85" : "text-forest-800"
           }`}
         >

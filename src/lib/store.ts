@@ -144,8 +144,8 @@ export function toggleWishlist(id: number) {
   const p = BY_ID.get(id);
   if (!p) return;
   const has = state.wishlist.includes(id);
+  // No toast: the filled heart (and the header count) is the confirmation.
   commit({ ...state, wishlist: has ? state.wishlist.filter((w) => w !== id) : [...state.wishlist, id] });
-  if (!has) notify({ kind: "wishlist", product: p });
 }
 
 export function addManyToWishlist(ids: number[]) {

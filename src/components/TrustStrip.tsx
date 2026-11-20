@@ -33,7 +33,7 @@ export default function TrustStrip() {
           <span aria-hidden className="h-px w-8 bg-gold/60 sm:w-12" />
           <h2
             id="ts-title"
-            className="text-center text-[0.74rem] font-bold uppercase tracking-[0.22em] text-forest-700"
+            className="text-center text-[0.704rem] font-bold uppercase tracking-[0.22em] text-forest-700"
           >
             The Naadu Nalam Promise
           </h2>
@@ -78,10 +78,10 @@ export default function TrustStrip() {
                 </span>
 
                 <span className="min-w-0">
-                  <span className="block text-balance font-serif text-[1.02rem] font-bold leading-snug text-forest-700 md:text-[1.06rem]">
+                  <span className="block text-balance font-serif text-[0.977rem] font-bold leading-snug text-forest-700 md:text-[1.02rem]">
                     {title}
                   </span>
-                  <span lang="ta" className="mt-1 block font-tamil-sans text-[0.78rem] leading-snug text-muted">
+                  <span lang="ta" className="mt-1 block font-tamil-sans text-[0.749rem] leading-snug text-muted">
                     {ta}
                   </span>
                 </span>

@@ -68,7 +68,7 @@ export function CartControl({ product, full = true }: { product: Product; full?:
       type="button"
       onClick={() => addToCart(product.id)}
       whileTap={{ scale: 0.97 }}
-      className={`inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full bg-forest-600 px-3 text-[0.9rem] font-bold sm:px-5 sm:text-[0.92rem] text-white transition-colors hover:bg-forest-700 ${
+      className={`inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full bg-forest-600 px-3 text-[0.883rem] font-bold sm:px-5 sm:text-[0.905rem] text-white transition-colors hover:bg-forest-700 ${
         full ? "w-full" : ""
       }`}
     >
@@ -104,7 +104,7 @@ export default function ProductCard({
           className="pointer-events-none object-cover transition-transform duration-[900ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-[1.05]"
         />
         {p.pack && (
-          <span className="absolute left-3 top-3 rounded-full bg-forest-900/80 px-2.5 py-1 text-[0.72rem] font-bold text-white backdrop-blur-sm">
+          <span className="absolute left-3 top-3 rounded-full bg-forest-900/80 px-2.5 py-1 text-[0.681rem] font-bold text-white backdrop-blur-sm">
             {p.pack}
           </span>
         )}
@@ -123,7 +123,7 @@ export default function ProductCard({
 
       <div className="flex flex-1 flex-col p-3.5 sm:p-4">
         {cat && (
-          <p className="truncate text-[0.68rem] font-bold uppercase tracking-[0.14em] text-gold">{cat.name}</p>
+          <p className="truncate text-[0.637rem] font-bold uppercase tracking-[0.14em] text-gold">{cat.name}</p>
         )}
         {/*
           Name + Tamil name reserve the height of a two-line name, so every card
@@ -131,24 +131,24 @@ export default function ProductCard({
           right under the name; any spare space falls above the price.
         */}
         <div className="min-h-[4.34rem] sm:min-h-[4.55rem]">
-          <h3 className="mt-1 line-clamp-2 font-serif text-[1rem] font-bold leading-snug text-forest-700 sm:text-[1.06rem]">
+          <h3 className="mt-1 line-clamp-2 font-serif text-[0.955rem] font-bold leading-snug text-forest-700 sm:text-[1.02rem]">
             <Link href={`/shop/${p.slug}`} className="transition-colors hover:text-forest-500">
               {p.name}
             </Link>
           </h3>
           {p.ta && (
-            <p lang="ta" className="mt-0.5 line-clamp-1 font-tamil-sans text-[0.78rem] text-muted">
+            <p lang="ta" className="mt-0.5 line-clamp-1 font-tamil-sans text-[0.749rem] text-muted">
               {p.ta}
             </p>
           )}
         </div>
         <div className="mt-auto pt-3">
           <p className="mb-3 flex items-baseline gap-2">
-            <span className="font-serif text-[1.25rem] font-bold text-ink">{rupees(p.price)}</span>
+            <span className="font-serif text-[1.225rem] font-bold text-ink">{rupees(p.price)}</span>
             {p.onSale && p.regularPrice > p.price && (
               <s className="text-sm text-muted">{rupees(p.regularPrice)}</s>
             )}
-            {p.pack && <span className="text-[0.8rem] text-muted">/ {p.pack}</span>}
+            {p.pack && <span className="text-[0.771rem] text-muted">/ {p.pack}</span>}
           </p>
           <CartControl product={p} />
         </div>

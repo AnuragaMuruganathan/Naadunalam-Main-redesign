@@ -194,7 +194,7 @@ export default function HeritageJourney() {
           defaults: { ease: "none" },
           scrollTrigger: {
             trigger: root.current,
-            start: "top 86px",
+            start: "top 72px",
             end: "bottom bottom",
             scrub: 0.8,
             invalidateOnRefresh: true,
@@ -246,10 +246,10 @@ export default function HeritageJourney() {
       <span
         id="generations"
         aria-hidden
-        className="order-2 block h-0 cine:absolute cine:inset-x-0 cine:top-[calc((260svh+86px)*0.74)]"
+        className="order-2 block h-0 cine:absolute cine:inset-x-0 cine:top-[calc((260svh+72px)*0.74)]"
       />
 
-      <div className="contents cine:sticky cine:top-[86px] cine:block cine:h-[calc(100svh-86px)] cine:overflow-hidden">
+      <div className="contents cine:sticky cine:top-[72px] cine:block cine:h-[calc(100svh-72px)] cine:overflow-hidden">
         {/* ================= Act 1: Panchabhootham ================= */}
         <section
           aria-labelledby="pb-title"
@@ -261,17 +261,17 @@ export default function HeritageJourney() {
               <span className="overflow-hidden">
                 <h2
                   id="pb-title"
-                  className="pb-title text-center font-serif text-[1.65rem] font-bold leading-tight text-forest-600 min-[400px]:text-[1.85rem] md:text-[2.75rem]"
+                  className="pb-title text-center font-serif text-[1.607rem] font-bold leading-tight text-forest-600 min-[400px]:text-[1.818rem] md:text-[2.763rem]"
                 >
                   Iyarkai Panchabhootham
                 </h2>
               </span>
               <span className="pb-rule hidden min-[480px]:block"><LeafRule flip /></span>
             </div>
-            <p lang="ta" className="pb-sub mt-2 text-center font-tamil text-[1.05rem] font-semibold text-forest-700 md:text-[1.2rem]">
+            <p lang="ta" className="pb-sub mt-2 text-center font-tamil text-[1.009rem] font-semibold text-forest-700 md:text-[1.171rem]">
               இயற்கை பஞ்சபூதம்
             </p>
-            <p className="pb-sub mx-auto mt-2 max-w-[52ch] text-balance text-center text-[1rem] text-ink/80 md:text-[1.08rem]">
+            <p className="pb-sub mx-auto mt-2 max-w-[52ch] text-balance text-center text-[0.955rem] text-ink/80 md:text-[1.041rem]">
               Earth, water, fire, air and space: the five elements that nourish every grain we grow.
             </p>
 
@@ -310,12 +310,12 @@ export default function HeritageJourney() {
                           <Icon className="size-5 transition-transform duration-500 group-hover:rotate-12" strokeWidth={1.6} />
                         </span>
                         <h3 className="mt-2.5 leading-tight">
-                          <span lang="ta" className="block font-tamil text-[1.3rem] font-bold text-forest-600">
+                          <span lang="ta" className="block font-tamil text-[1.279rem] font-bold text-forest-600">
                             {el.ta}
                           </span>
                           <span className="sr-only"> ({el.en})</span>
                         </h3>
-                        <p className="pb-desc mt-2 text-[0.92rem] leading-snug text-muted">{el.desc}</p>
+                        <p className="pb-desc mt-2 text-[0.905rem] leading-snug text-muted">{el.desc}</p>
                       </div>
                     </article>
                   </li>
@@ -345,7 +345,7 @@ export default function HeritageJourney() {
               <span aria-hidden className="sg-title-rule hidden h-px w-16 origin-right bg-white/80 sm:block md:w-28" />
               <h2
                 id="sg-title"
-                className="sg-title text-center font-serif text-[clamp(0.95rem,2.2vw,2.1rem)] font-medium uppercase tracking-[0.14em] text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.35)]"
+                className="sg-title text-center font-serif text-[clamp(0.939rem,2.31vw,2.08rem)] font-medium uppercase tracking-[0.14em] text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.35)]"
               >
                 The Legacy of Seven Generations
               </h2>
@@ -388,7 +388,7 @@ export default function HeritageJourney() {
                           {t}
                         </tspan>
                       ))}
-                      <tspan x={0} dy="22" fontFamily="var(--font-nunito)" fontSize="15" fontWeight="600" fill="#7a5a2c">
+                      <tspan x={0} dy="22" fontFamily="var(--font-sans)" fontSize="14" fontWeight="600" fill="#7a5a2c">
                         ({n.ord})
                       </tspan>
                     </text>
@@ -412,7 +412,7 @@ export default function HeritageJourney() {
             {[...nodes].reverse().map((n) => (
               <li key={n.n} className="sg-chip shrink-0 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-center text-white">
                 <span lang="ta" className="block font-tamil-sans text-sm font-semibold">{n.ta.join(" · ")}</span>
-                <span className="block text-[0.72rem] text-white/70">{n.ord} · {n.en}</span>
+                <span className="block text-[0.681rem] text-white/70">{n.ord} · {n.en}</span>
               </li>
             ))}
           </ol>

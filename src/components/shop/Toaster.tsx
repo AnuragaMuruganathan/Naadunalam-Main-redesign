@@ -25,7 +25,7 @@ export default function Toaster() {
   const showLink = toast && pathname !== target.href;
 
   return (
-    <div aria-live="polite" className="pointer-events-none fixed inset-x-3 bottom-3 z-[80] flex justify-center sm:inset-x-auto sm:bottom-6 sm:right-6">
+    <div aria-live="polite" className="pointer-events-none fixed inset-x-3 bottom-[calc(0.75rem+var(--sticky-bar-h,0px))] z-[80] flex justify-center transition-[bottom] duration-300 sm:inset-x-auto sm:bottom-[calc(1.5rem+var(--sticky-bar-h,0px))] sm:right-6">
       <AnimatePresence>
         {toast && (
           <motion.div
@@ -40,7 +40,7 @@ export default function Toaster() {
               <Image src={toast.product.img} alt="" fill sizes="48px" className="object-cover" />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block text-[0.72rem] font-bold uppercase tracking-[0.14em] text-gold-soft">
+              <span className="block text-[0.681rem] font-bold uppercase tracking-[0.14em] text-gold-soft">
                 {toast.kind === "cart" ? "Added to cart" : "Saved to wishlist"}
               </span>
               <span className="block truncate text-sm font-semibold">{toast.product.name}</span>
@@ -48,7 +48,7 @@ export default function Toaster() {
             {showLink && (
               <Link
                 href={target.href}
-                className="shrink-0 rounded-full bg-gold-soft px-3.5 py-2 text-[0.8rem] font-bold text-forest-950 transition-colors hover:bg-white"
+                className="shrink-0 rounded-full bg-gold-soft px-3.5 py-2 text-[0.771rem] font-bold text-forest-950 transition-colors hover:bg-white"
               >
                 {target.label}
               </Link>

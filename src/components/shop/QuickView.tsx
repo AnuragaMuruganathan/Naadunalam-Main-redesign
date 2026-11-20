@@ -108,22 +108,22 @@ function Dialog({ product: p, onClose }: { product: Product; onClose: () => void
             <Link
               href={`/shop?category=${cat.slug}`}
               onClick={onClose}
-              className="w-fit text-[0.72rem] font-bold uppercase tracking-[0.16em] text-gold hover:text-forest-600"
+              className="w-fit text-[0.681rem] font-bold uppercase tracking-[0.16em] text-gold hover:text-forest-600"
             >
               {cat.name}
             </Link>
           )}
-          <h2 id={`qv-${p.id}`} className="mt-2 pr-10 font-serif text-[1.6rem] font-bold leading-tight text-forest-700 md:text-[1.85rem]">
+          <h2 id={`qv-${p.id}`} className="mt-2 pr-10 font-serif text-[1.555rem] font-bold leading-tight text-forest-700 md:text-[1.818rem]">
             {p.name}
           </h2>
           {p.ta && (
-            <p lang="ta" className="mt-1 font-tamil text-[1.02rem] text-forest-800">
+            <p lang="ta" className="mt-1 font-tamil text-[0.977rem] text-forest-800">
               {p.ta}
             </p>
           )}
 
           <p className="mt-4 flex items-baseline gap-2">
-            <span className="font-serif text-[1.75rem] font-bold text-ink">{rupees(p.price)}</span>
+            <span className="font-serif text-[1.713rem] font-bold text-ink">{rupees(p.price)}</span>
             {p.pack && <span className="text-muted">/ {p.pack}</span>}
           </p>
 

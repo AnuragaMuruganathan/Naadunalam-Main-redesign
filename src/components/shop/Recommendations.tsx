@@ -27,8 +27,8 @@ export default function Recommendations({
     <section aria-labelledby="rec-title" className="mx-auto max-w-[1320px] px-5 pb-14 pt-4 md:px-8 md:pb-20">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-[0.74rem] font-bold uppercase tracking-[0.22em] text-gold">{sub}</p>
-          <h2 id="rec-title" className="mt-1 font-serif text-[1.6rem] font-bold text-forest-600 md:text-[2rem]">
+          {sub && <p className="text-[0.704rem] font-bold uppercase tracking-[0.1em] text-gold">{sub}</p>}
+          <h2 id="rec-title" className="mt-1 font-serif text-[1.555rem] font-bold text-forest-600 md:text-[1.975rem]">
             {title}
           </h2>
         </div>

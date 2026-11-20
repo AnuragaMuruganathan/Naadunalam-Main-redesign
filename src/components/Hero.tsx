@@ -79,7 +79,7 @@ export default function Hero() {
       <div className="hero-copy relative mx-auto flex h-full max-w-[1320px] flex-col justify-end px-5 pb-14 md:justify-center md:px-12 md:pb-0 lg:px-16">
         <h1
           lang="ta"
-          className="font-tamil text-[1.7rem] font-bold leading-[1.3] min-[400px]:text-[1.85rem] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.35)] sm:text-[2.6rem] md:text-[clamp(2.2rem,3.5vw,3.25rem)]"
+          className="font-tamil text-[1.66rem] font-bold leading-[1.3] min-[400px]:text-[1.818rem] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.35)] sm:text-[2.605rem] md:text-[clamp(2.185rem,3.675vw,3.288rem)]"
         >
           <MaskLine delay={0.45}>ஏழு தலைமுறை,</MaskLine>
           <MaskLine delay={0.6}>
@@ -107,7 +107,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 1.25, ease }}
           whileHover="hover"
           whileTap={{ scale: 0.97 }}
-          className="group relative mt-8 inline-flex w-fit cursor-pointer items-center gap-3 overflow-hidden rounded-full bg-white px-7 py-3.5 text-[0.98rem] font-bold text-ink shadow-[0_10px_30px_-10px_rgba(0,0,0,0.45)]"
+          className="group relative mt-8 inline-flex w-fit cursor-pointer items-center gap-3 overflow-hidden rounded-full bg-white px-7 py-3.5 text-[0.973rem] font-bold text-ink shadow-[0_10px_30px_-10px_rgba(0,0,0,0.45)]"
         >
           <motion.span
             aria-hidden
